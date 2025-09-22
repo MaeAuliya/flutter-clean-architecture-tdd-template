@@ -69,6 +69,30 @@ project_root/
 │
 ├── lib/
 │   └── src/
+│       ├── core/                   
+│       │   ├── enums/              # App-wide enumerations
+│       │   ├── errors/             # Error handling & exceptions
+│       │   ├── extensions/         # Dart extensions
+│       │   ├── res/                # Resources (colors, typography, etc.)
+│       │   ├── services/           # External services (API, Firebase, etc.)
+│       │   ├── shared/             # Shared widgets/components
+│       │   ├── usecases/           # Contract Abstraction for usecase pattern
+│       │   ├── utils/              # Utility helpers
+│       │   └── modules/            # Reusable domain/data modules
+│       │       └── sample_module/  
+│       │           ├── domain/
+│       │           │   ├── entities/
+│       │           │   │   └── sample_entity.dart
+│       │           │   ├── repositories/
+│       │           │   │   └── sample_repository.dart
+│       │           │   └── usecases/
+│       │           │       └── sample_usecase.dart
+│       │           └── data/
+│       │               ├── datasources/
+│       │               │   └── sample_remote_data_source.dart
+│       │               └── repositories/
+│       │                   └── sample_repository_impl.dart
+│       │
 │       └── features/
 │           └── feature_a/
 │               ├── data/
@@ -105,6 +129,14 @@ project_root/
 │                       └── feature_a_card.dart
 │
 ├── test/
+│   ├── core/
+│   │   └── modules/
+│   │       └── sample_module/
+│   │           ├── domain/
+│   │           │   └── usecases/sample_usecase_test.dart
+│   │           └── data/
+│   │               └── repositories/sample_repository_impl_test.dart
+│   │
 │   └── features/
 │       └── feature_a/
 │           ├── data/
