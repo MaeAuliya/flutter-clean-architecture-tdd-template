@@ -18,34 +18,22 @@ This repository provides a scalable, maintainable, and modular project structure
 
 ### Architecture & State Management
 - [Bloc](https://pub.dev/packages/flutter_bloc) – primary state management
+- [Flutter Bloc](https://pub.dev/packages/flutter_bloc) - Flutter widgets that make it easy to integrate blocs
 - [Provider](https://pub.dev/packages/provider) – data binding
 - [getIt](https://pub.dev/packages/get_it) – dependency injection
 - [Equatable](https://pub.dev/packages/equatable) – value equality
+- [Dartz](https://pub.dev/packages/dartz) - Either Success or Failure Handler
 - [flutter_lints](https://pub.dev/packages/flutter_lints) – linting & code style
 
 ### Data & API
 - [Dio](https://pub.dev/packages/dio) – HTTP client
 - [Shared Preferences](https://pub.dev/packages/shared_preferences) – key-value storage
-- [SQFlite](https://pub.dev/packages/sqflite) – local database
-- [UUID](https://pub.dev/packages/uuid) – unique ID generator
-
-### Firebase
-- [Firebase Authentication](https://firebase.google.com/docs/auth)
-- [Firebase Cloud Messaging (FCM)](https://firebase.google.com/docs/cloud-messaging)
-- [Firebase Crashlytics](https://firebase.google.com/docs/crashlytics)
-- [Firebase Firestore](https://firebase.google.com/docs/firestore)
-- [Firebase Realtime Database](https://firebase.google.com/docs/database)
 
 ### Utilities
-- [Geolocator](https://pub.dev/packages/geolocator) – location management
 - [flutter_svg](https://pub.dev/packages/flutter_svg) – SVG rendering
-- [file_picker](https://pub.dev/packages/file_picker) – file picker
-- [image_picker](https://pub.dev/packages/image_picker) – image picker
 - [lottie](https://pub.dev/packages/lottie) – animations
-- [intl](https://pub.dev/packages/intl) – internationalization
 - [url_launcher](https://pub.dev/packages/url_launcher) – external URL launcher
 - [package_info_plus](https://pub.dev/packages/package_info_plus) – app versioning
-- [shimmer](https://pub.dev/packages/shimmer) – loading placeholders
 
 ### Testing
 - [flutter_test](https://api.flutter.dev/flutter/flutter_test/flutter_test-library.html) – unit testing
@@ -68,6 +56,7 @@ project_root/
 │   └── vectors/            # SVG vector files
 │
 ├── lib/
+│   └── main.dart           # Main Program
 │   └── src/
 │       ├── core/                   
 │       │   ├── enums/              # App-wide enumerations
