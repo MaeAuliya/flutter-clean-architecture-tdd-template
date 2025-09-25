@@ -57,6 +57,7 @@ class Texts {
   static const stateUnauthorized = 'You are not authorized.';
   static const stateRefreshing = 'Refreshing...';
   static const stateCompleted = 'All tasks completed.';
+  static const pageUnderConstruction = 'This page currently under construction';
 
   // =====================
   // Errors

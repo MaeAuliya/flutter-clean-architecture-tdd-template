@@ -8,6 +8,8 @@ class PageUnderConstruction extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Center(child: CoreText(Texts.pageUnderConstruction)));
+    return const Scaffold(
+      body: Center(child: CoreText(Texts.pageUnderConstruction)),
+    );
   }
 }

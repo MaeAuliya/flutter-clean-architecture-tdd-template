@@ -2,8 +2,10 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 import 'src/core/res/app_theme.dart';
+import 'src/core/services/injection_container.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
 
@@ -14,7 +16,7 @@ void main() async {
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
   // // Init Dependencies
-  // await initialization();
+  await initDependencies();
 
   // Run App
   runApp(const MyApp());
