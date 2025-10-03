@@ -4,11 +4,13 @@ import '../entities/tap_per_day.dart';
 abstract class TapperRepository {
   const TapperRepository();
 
-  ResultVoid tap();
+  ResultVoid tap(int step);
 
   ResultVoid longPress(int taps);
 
   ResultFuture<List<TapPerDay>> getAllTapPerDay();
 
-  ResultFuture<TapPerDay> getTodayTapPerDay();
+  ResultFuture<TapPerDay?> getTodayTapPerDay();
+
+  ResultVoid goToRepository();
 }

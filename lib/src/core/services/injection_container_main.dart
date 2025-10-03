@@ -19,6 +19,7 @@ Future<void> initDependencies() async {
   );
   // For Features
   await Future.wait([
+    _initTapper(),
     // Feature A
     // Feature B
     // Feature C
@@ -38,4 +39,38 @@ Future<void> _initCore({
     ..registerLazySingleton(() => api)
     ..registerLazySingleton(() => packageInfo)
     ..registerLazySingleton(() => database);
+}
+
+Future<void> _initTapper() async {
+  sl
+    // Bloc
+    ..registerFactory(
+      () => TapperBloc(
+        getAllTapPerDay: sl(),
+        getTodayTapPerDay: sl(),
+        goToRepository: sl(),
+        longPress: sl(),
+        tap: sl(),
+      ),
+    )
+    // Usecases
+    ..registerLazySingleton(() => GetAllTapPerDay(repository: sl()))
+    ..registerLazySingleton(() => GetTodayTapPerDay(repository: sl()))
+    ..registerLazySingleton(() => GoToRepository(repository: sl()))
+    ..registerLazySingleton(() => LongPress(repository: sl()))
+    ..registerLazySingleton(() => Tap(repository: sl()))
+    // Repository
+    ..registerLazySingleton<TapperRepository>(
+      () => TapperRepositoryImpl(
+        remoteDataSource: sl(),
+        localDataSource: sl(),
+      ),
+    )
+    // Data Sources
+    ..registerLazySingleton<TapperLocalDataSource>(
+      () => TapperLocalDataSourceImpl(db: sl()),
+    )
+    ..registerLazySingleton<TapperRemoteDataSource>(
+      () => const TapperRemoteDataSourceImpl(),
+    );
 }

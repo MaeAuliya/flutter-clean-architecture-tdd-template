@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="NONE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="4f9b8da9-47c0-4bb4-8231-17404f1c8e5b" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/lib/src/features/navigation/presentation/widgets/navigation_item.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/src/features/tapper/data/datasources/tapper_remote_data_source.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/src/features/tapper/data/repositories/tapper_repository_impl.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/src/features/tapper/domain/usecases/go_to_repository.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/src/features/tapper/presentation/bloc/tapper_bloc.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/src/features/tapper/presentation/bloc/tapper_event.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/src/features/tapper/presentation/bloc/tapper_state.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/src/features/tapper/presentation/providers/tapper_provider.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/src/features/tapper/presentation/screens/splash_screen.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/src/features/tapper/presentation/screens/tap_screen.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/src/features/tapper/presentation/screens/tap_statistic_screen.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/src/features/tapper/presentation/views/tap_view.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/src/features/tapper/presentation/widgets/tap_button.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/caches/deviceStreaming.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/deviceStreaming.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/deploymentTargetSelector.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/migrations.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/analysis_options.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/analysis_options.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/core/extensions/context_extension.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/core/extensions/context_extension.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/core/res/colours.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/core/res/colours.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/core/res/fonts.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/core/res/fonts.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/core/res/media_res.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/core/res/media_res.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/core/res/texts.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/core/res/texts.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/core/res/typography.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/core/res/typography.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/core/services/injection_container.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/core/services/injection_container.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/core/services/injection_container_main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/core/services/injection_container_main.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/core/services/local_database.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/core/services/local_database.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/core/shared/screens/page_under_construction.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/core/shared/screens/page_under_construction.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/core/shared/views/error_view.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/core/shared/views/error_view.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/core/shared/views/persistent_view.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/core/shared/views/persistent_view.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/core/utils/core_utils.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/core/utils/core_utils.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/features/tapper/data/datasources/tapper_local_data_source.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/tapper/data/datasources/tapper_local_data_source.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/features/tapper/data/models/tap_per_day_model.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/tapper/data/models/tap_per_day_model.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/features/tapper/data/repositories/example_repository_impl.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/core/services/router.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/features/tapper/domain/repositories/tapper_repository.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/tapper/domain/repositories/tapper_repository.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/features/tapper/domain/usecases/get_today_tap_per_day.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/tapper/domain/usecases/get_today_tap_per_day.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/features/tapper/domain/usecases/tap.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/tapper/domain/usecases/tap.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/features/tapper/presentation/bloc/example_bloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/core/services/router_main.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/features/tapper/presentation/bloc/example_event.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/core/utils/constants.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/features/tapper/presentation/bloc/example_state.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/core/utils/format_utils.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/features/tapper/presentation/providers/example_provider.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/core/utils/validator.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/features/tapper/presentation/screens/example_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/navigation/presentation/providers/navigation_controller.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/features/tapper/presentation/views/example_view.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/navigation/presentation/views/bottom_navigation.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Dart File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;MaeAuliya&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/MaeAuliya/flutter-clean-architecture-tdd-template.git&quot;,
+    &quot;accountId&quot;: &quot;37170297-4848-485b-a2f4-309fde1840cd&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 2
+}</component>
+  <component name="ProjectId" id="33DWEmDw5QQXRz6xTiFLpWMFRFY" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Flutter.main.dart.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.readMode.enableVisualFormatting": "true",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
+    "dart.analysis.tool.window.visible": "false",
+    "git-widget-placeholder": "main",
+    "io.flutter.reload.alreadyRun": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/o-maisan.auliya/StudioProjects/flutter-clean-architecture-tdd-template/lib/src/features/navigation/presentation/widgets",
+    "settings.editor.selected.configurable": "live.edit.configurable",
+    "show.migrate.to.gradle.popup": "false"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\o-maisan.auliya\StudioProjects\flutter-clean-architecture-tdd-template\lib\src\features\navigation\presentation\widgets" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="main.dart" type="FlutterRunConfigurationType" factoryName="Flutter">
+      <option name="filePath" value="$PROJECT_DIR$/lib/main.dart" />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="4f9b8da9-47c0-4bb4-8231-17404f1c8e5b" name="Changes" comment="" />
+      <created>1758852015741</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1758852015741</updated>
+    </task>
+    <servers />
+  </component>
+</project>

@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../features/navigation/presentation/providers/navigation_controller.dart';
+import '../../features/tapper/presentation/bloc/tapper_bloc.dart';
+import '../../features/tapper/presentation/providers/tapper_provider.dart';
 import '../res/typography.dart';
 
 /// {@template context_extension}
@@ -150,10 +154,12 @@ extension ContextExtension on BuildContext {
 
   //// Blocs
   // ExampleBloc get exampleBloc => read<ExampleBloc>();
+  TapperBloc get tapperBloc => read<TapperBloc>();
 
   //// Providers
   // ExampleProvider get exampleProvider => read<ExampleProvider>();
+  TapperProvider get tapperProvider => read<TapperProvider>();
 
   //// Navigation controller
-  // BottomNavigatorController get bottomNavigator => read<BottomNavigatorController>();
+  NavigationController get bottomNavigator => read<NavigationController>();
 }

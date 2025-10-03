@@ -1,3 +1,4 @@
+import '../../../../core/utils/typedef.dart';
 import '../../domain/entities/tap_per_day.dart';
 
 class TapPerDayModel extends TapPerDay {
@@ -25,5 +26,14 @@ class TapPerDayModel extends TapPerDay {
         tapCount: entity.tapCount,
         longPressCount: entity.longPressCount,
         date: entity.date,
+      );
+
+  TapPerDayModel.fromLocalDatabase(DataMap map)
+    : super(
+        id: map['id'] as int,
+        dateId: map['date_id'] as String,
+        tapCount: map['tap_count'] as int,
+        longPressCount: map['long_press_count'] as int,
+        date: DateTime.fromMillisecondsSinceEpoch(map['date'] as int),
       );
 }

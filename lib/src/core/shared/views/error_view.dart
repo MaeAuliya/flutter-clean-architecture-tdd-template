@@ -183,10 +183,10 @@ class ErrorView extends StatelessWidget {
             Column(
               spacing: context.heightScale * 4,
               children: [
-                CoreTypography.coreText(
-                  text: title ?? 'Something Went Wrong',
-                  fontWeight: CoreTypography.bold,
-                  fontSize: 16,
+                CoreText(
+                  title ?? 'Something Went Wrong',
+                  weight: CoreTypography.bold,
+                  size: 16,
                   color: Colours.primaryBlue,
                   textAlign: TextAlign.center,
                 ),

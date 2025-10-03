@@ -33,6 +33,8 @@
 /// the `fonts` section.
 /// {@endtemplate}
 class Fonts {
+  const Fonts._();
+
   /// The default Roboto font family.
   ///
   /// Include it in your `pubspec.yaml`:
@@ -49,4 +51,5 @@ class Fonts {
   ///           weight: 700
   /// ```
   static const String roboto = 'Roboto';
+  static const String satisfy = 'Satisfy';
 }

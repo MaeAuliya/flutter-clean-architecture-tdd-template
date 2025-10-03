@@ -49,6 +49,7 @@ class Texts {
   // =====================
   // States
   // =====================
+  static const success = 'Success';
   static const stateEmpty = 'No data available.';
   static const stateLoading = 'Loading...';
   static const stateSuccess = 'Operation completed successfully.';
@@ -62,6 +63,7 @@ class Texts {
   // =====================
   // Errors
   // =====================
+  static const error = 'Error';
   static const errorSomethingWentWrong =
       'Something went wrong. Please try again.';
   static const errorNoInternet = 'No internet connection.';
@@ -75,4 +77,19 @@ class Texts {
   static const btnCancel = 'Cancel';
   static const btnSubmit = 'Submit';
   static const btnContinue = 'Continue';
+
+  // =====================
+  // Validator
+  // =====================
+  static const emptyValidator = 'This field cannot be empty.';
+  static const passwordEightCharValidator =
+      'Password must be at least 8 characters.';
+  static const passwordValueValidator = 'Passwords do not match.';
+  static const phoneDigitsOnlyValidator =
+      'Phone number must contain only digits.';
+  static const phoneMinLengthValidator =
+      'Phone number must be at least 10 digits.';
+  static const phoneMaxLengthValidator =
+      'Phone number must be no more than 15 digits.';
+  static const emailInvalidValidator = 'Please enter a valid email address.';
 }

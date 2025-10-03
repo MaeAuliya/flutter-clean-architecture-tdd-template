@@ -59,26 +59,29 @@ class MediaRes {
   // =====================
   /// Example SVG icon.
   /// Replace `.svg` with the actual file name in your `assets/icons` folder.
-  static const exampleIcon = '$_baseIcons/example.svg';
+  static const exampleIcon = '$_baseIcons/.svg';
 
   // =====================
   // Images
   // =====================
   /// Example PNG image.
   /// Replace `.png` with the actual file name in your `assets/images` folder.
-  static const exampleImage = '$_baseImages/example.png';
+  static const exampleImage = '$_baseImages/.png';
 
   // =====================
   // Vectors
   // =====================
   /// Example SVG vector.
   /// Replace `.svg` with the actual file name in your `assets/vectors` folder.
-  static const exampleVector = '$_baseVectors/example.svg';
+  static const emptyStateVector = '$_baseVectors/empty_state_vector.svg';
+  static const errorStateVector = '$_baseVectors/error_state_vector.svg';
+  static const pageNotFoundVector = '$_baseVectors/page_not_found_vector.svg';
+  static const exampleVector = '$_baseVectors/.svg';
 
   // =====================
   // Animations
   // =====================
   /// Example Lottie animation.
   /// Replace `.json` with the actual file name in your `assets/animations` folder.
-  static const exampleAnimation = '$_baseAnimations/example.json';
+  static const exampleAnimation = '$_baseAnimations/.json';
 }

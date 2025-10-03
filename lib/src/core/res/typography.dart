@@ -299,6 +299,7 @@ class CoreText extends StatelessWidget {
     this.maxLines,
     this.overflow = TextOverflow.ellipsis,
     this.softWrap,
+    this.family = Fonts.roboto,
   }) : _style = style;
 
   final String text;
@@ -318,6 +319,7 @@ class CoreText extends StatelessWidget {
   final int? maxLines;
   final TextOverflow? overflow;
   final bool? softWrap;
+  final String family;
 
   @override
   Widget build(BuildContext context) {
@@ -349,6 +351,7 @@ class CoreText extends StatelessWidget {
         letterSpacing: letterSpacing,
         underline: underline,
         strikeThrough: strikeThrough,
+        fontFamily: family,
       ),
     );
 

@@ -107,6 +107,10 @@ flutter:
           weight: 500
         - asset: assets/fonts/roboto/Roboto-Regular.ttf
           weight: 400
+    - family: Satisfy
+      fonts:
+        - asset: assets/fonts/satisfy/Satisfy-Regular.ttf
+          weight: 400
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package

@@ -56,6 +56,7 @@ class Colours {
   static const Color secondaryBlue = Color(0xFF73A9F3);
   static const Color darkBlue = Color(0xFF092C4C);
   static const Color lightBlue = Color(0xFFEAF3FF);
+  static const Color yellow = Color(0xffFDC300);
 
   // =====================
   // Secondary Palette

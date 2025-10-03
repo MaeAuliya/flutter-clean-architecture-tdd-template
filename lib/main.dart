@@ -1,11 +1,13 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import 'src/core/res/app_theme.dart';
 import 'src/core/services/injection_container.dart';
+import 'src/core/services/router.dart';
+import 'src/features/navigation/presentation/providers/navigation_controller.dart';
+import 'src/features/tapper/presentation/providers/tapper_provider.dart';
+import 'src/features/tapper/presentation/screens/splash_screen.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
 
@@ -29,19 +31,22 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (_) => TapperProvider()),
+        ChangeNotifierProvider(create: (_) => NavigationController()),
+
         /// Example Features
         // ChangeNotifierProvider(create: (_) => ExampleProvider()),
       ],
       child: MaterialApp(
-        title: 'ShareCar for Business',
+        title: 'Flutter Clean Architecture TDD Template',
         showPerformanceOverlay: false,
         debugShowCheckedModeBanner: false,
         theme: AppTheme.light,
-        onGenerateRoute: (settings) => generateRoute(settings),
+        darkTheme: AppTheme.dark,
+        onGenerateRoute: generateRoute,
         initialRoute: SplashScreen.routeName,
         navigatorKey: navigatorKey,
         navigatorObservers: [
-          sl<RouteObserver<ModalRoute<void>>>(),
           // sl<MyRouteObserver>(),
         ],
         builder: (context, child) {
