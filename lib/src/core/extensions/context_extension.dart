@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../features/navigation/presentation/providers/navigation_controller.dart';
 import '../../features/tapper/presentation/bloc/tapper_bloc.dart';
 import '../../features/tapper/presentation/providers/tapper_provider.dart';
+import '../../features/tapper/presentation/providers/weather_provider.dart';
 import '../res/typography.dart';
 
 /// {@template context_extension}
@@ -159,6 +160,7 @@ extension ContextExtension on BuildContext {
   //// Providers
   // ExampleProvider get exampleProvider => read<ExampleProvider>();
   TapperProvider get tapperProvider => read<TapperProvider>();
+  WeatherProvider get weatherProvider => read<WeatherProvider>();
 
   //// Navigation controller
   NavigationController get bottomNavigator => read<NavigationController>();

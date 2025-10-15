@@ -92,4 +92,7 @@ class Texts {
   static const phoneMaxLengthValidator =
       'Phone number must be no more than 15 digits.';
   static const emailInvalidValidator = 'Please enter a valid email address.';
+
+  static const statisticsDummyDesc =
+      'This is your Statistic Page — a space designed for creativity and exploration. Use this page to visualize data, track progress, or showcase any form of analytics that fits your app’s purpose. Feel free to customize the layout, charts, and metrics to match your own idea — whether it’s user activity, performance trends, achievements, or something entirely new. Make it yours.';
 }

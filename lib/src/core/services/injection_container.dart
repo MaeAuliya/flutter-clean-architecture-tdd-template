@@ -14,6 +14,10 @@ import '../../features/tapper/domain/usecases/go_to_repository.dart';
 import '../../features/tapper/domain/usecases/long_press.dart';
 import '../../features/tapper/domain/usecases/tap.dart';
 import '../../features/tapper/presentation/bloc/tapper_bloc.dart';
+import '../modules/weather/data/datasources/weather_remote_data_source.dart';
+import '../modules/weather/data/repositories/weather_repository_impl.dart';
+import '../modules/weather/domain/repositories/weather_repository.dart';
+import '../modules/weather/domain/usecases/get_weather_today.dart';
 import 'api.dart';
 import 'local_database.dart';
 

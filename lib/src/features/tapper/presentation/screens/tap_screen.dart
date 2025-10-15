@@ -24,7 +24,6 @@ class _TapScreenState extends State<TapScreen> {
   Widget build(BuildContext context) {
     return BlocListener<TapperBloc, TapperState>(
       listener: (context, state) {
-        debugPrint(state.runtimeType.toString());
         if (state is GetTodayTapPerDayError) {
           CoreUtils.showSnackBar(
             context: context,
@@ -43,14 +42,23 @@ class _TapScreenState extends State<TapScreen> {
             message: state.errorMessage,
             isError: true,
           );
+        } else if (state is GetTodayWeatherError) {
+          CoreUtils.showSnackBar(
+            context: context,
+            message: state.errorMessage,
+            isError: true,
+          );
         } else if (state is GetTodayTapPerDaySuccess) {
           context.tapperProvider.updateTodayTap(state.todayTapPerDay);
+          context.tapperBloc.add(const GetTodayWeatherEvent());
         } else if (state is GetTodayTapPerDayEmpty) {
           context.tapperProvider.updateTodayTap(null);
         } else if (state is TapSuccess) {
           context.tapperProvider.updateSuccessTap(state.currentCount);
         } else if (state is LongPressSuccess) {
           context.tapperProvider.updateSuccessTap(state.currentCount);
+        } else if (state is GetTodayWeatherSuccess) {
+          context.weatherProvider.updateWeather(state.todayWeather);
         }
       },
       child: const TapView(),

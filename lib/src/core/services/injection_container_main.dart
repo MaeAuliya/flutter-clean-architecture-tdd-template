@@ -19,6 +19,7 @@ Future<void> initDependencies() async {
   );
   // For Features
   await Future.wait([
+    _initWeatherService(),
     _initTapper(),
     // Feature A
     // Feature B
@@ -41,6 +42,25 @@ Future<void> _initCore({
     ..registerLazySingleton(() => database);
 }
 
+Future<void> _initWeatherService() async {
+  sl
+    // Usecases
+    ..registerLazySingleton(() => GetWeatherToday(repository: sl()))
+    // Repository
+    ..registerLazySingleton<WeatherRepository>(
+      () => WeatherRepositoryImpl(
+        remoteDataSource: sl(),
+      ),
+    )
+    // Data Sources
+    ..registerLazySingleton<WeatherRemoteDataSource>(
+      () => WeatherRemoteDataSourceImpl(
+        dio: sl(),
+        api: sl(),
+      ),
+    );
+}
+
 Future<void> _initTapper() async {
   sl
     // Bloc
@@ -51,6 +71,7 @@ Future<void> _initTapper() async {
         goToRepository: sl(),
         longPress: sl(),
         tap: sl(),
+        getWeatherToday: sl(),
       ),
     )
     // Usecases

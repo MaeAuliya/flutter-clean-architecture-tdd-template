@@ -7,6 +7,7 @@ import 'src/core/services/injection_container.dart';
 import 'src/core/services/router.dart';
 import 'src/features/navigation/presentation/providers/navigation_controller.dart';
 import 'src/features/tapper/presentation/providers/tapper_provider.dart';
+import 'src/features/tapper/presentation/providers/weather_provider.dart';
 import 'src/features/tapper/presentation/screens/splash_screen.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
@@ -32,6 +33,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => TapperProvider()),
+        ChangeNotifierProvider(create: (_) => WeatherProvider()),
         ChangeNotifierProvider(create: (_) => NavigationController()),
 
         /// Example Features

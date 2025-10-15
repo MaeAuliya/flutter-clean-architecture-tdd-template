@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/modules/weather/domain/entities/core_weather.dart';
+import '../../../../core/modules/weather/domain/usecases/get_weather_today.dart';
 import '../../domain/entities/tap_per_day.dart';
 import '../../domain/usecases/get_all_tap_per_day.dart';
 import '../../domain/usecases/get_today_tap_per_day.dart';
@@ -19,6 +21,7 @@ class TapperBloc extends Bloc<TapperEvent, TapperState> {
   final GoToRepository _goToRepository;
   final LongPress _longPress;
   final Tap _tap;
+  final GetWeatherToday _getWeatherToday;
 
   TapperBloc({
     required GetAllTapPerDay getAllTapPerDay,
@@ -26,11 +29,13 @@ class TapperBloc extends Bloc<TapperEvent, TapperState> {
     required GoToRepository goToRepository,
     required LongPress longPress,
     required Tap tap,
+    required GetWeatherToday getWeatherToday,
   }) : _getAllTapPerDay = getAllTapPerDay,
        _getTodayTapPerDay = getTodayTapPerDay,
        _goToRepository = goToRepository,
        _longPress = longPress,
        _tap = tap,
+       _getWeatherToday = getWeatherToday,
        super(const TapperInit()) {
     on<GetAllTapPerDayEvent>(_getAllTapPerDayHandler);
     on<GetTodayTapPerDayEvent>(_getTodayTapPerDayHandler);
@@ -41,6 +46,7 @@ class TapperBloc extends Bloc<TapperEvent, TapperState> {
     on<_FlushTapTickEvent>(_flushTapTickHandler);
     on<_FlushLongPressTickEvent>(_flushLongPressTickHandler);
     on<_LongPressTickEvent>(_longPressTickHandler);
+    on<GetTodayWeatherEvent>(_getWeatherTodayHandler);
   }
 
   int _count = 0;
@@ -205,6 +211,18 @@ class TapperBloc extends Bloc<TapperEvent, TapperState> {
     _flushDebounce = Timer(const Duration(milliseconds: 150), () {
       add(const _FlushLongPressTickEvent());
     });
+  }
+
+  Future<void> _getWeatherTodayHandler(
+    GetTodayWeatherEvent event,
+    Emitter<TapperState> emit,
+  ) async {
+    emit(const GetTodayWeatherLoading());
+    final result = await _getWeatherToday.call();
+    result.fold(
+      (failure) => emit(GetTodayWeatherError(failure.errorMessage)),
+      (todayWeather) => emit(GetTodayWeatherSuccess(todayWeather)),
+    );
   }
 
   @override

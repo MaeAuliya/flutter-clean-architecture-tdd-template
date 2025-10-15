@@ -5,8 +5,37 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4f9b8da9-47c0-4bb4-8231-17404f1c8e5b" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/caches/deviceStreaming.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/deviceStreaming.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/src/core/enums/weather_temperature.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/src/core/modules/weather/data/models/core_weather_model.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/src/core/modules/weather/data/models/core_weather_time_location_model.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/src/core/modules/weather/data/repositories/example_repository_impl.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/src/core/modules/weather/data/repositories/weather_repository_impl.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/src/core/modules/weather/domain/entities/core_weather.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/src/core/modules/weather/domain/entities/core_weather_time_location.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/src/core/modules/weather/domain/repositories/weather_repository.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/src/core/modules/weather/domain/usecases/get_weather_today.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/src/features/tapper/presentation/providers/weather_provider.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/src/features/tapper/presentation/views/tap_statistic_view.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/src/features/tapper/presentation/widgets/weather_badge.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ios/Runner/Info.plist" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Runner/Info.plist" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/core/extensions/context_extension.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/core/extensions/context_extension.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/core/res/texts.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/core/res/texts.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/core/services/api.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/core/services/api.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/core/services/injection_container.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/core/services/injection_container.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/core/services/injection_container_main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/core/services/injection_container_main.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/features/tapper/presentation/bloc/tapper_bloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/tapper/presentation/bloc/tapper_bloc.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/features/tapper/presentation/bloc/tapper_event.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/tapper/presentation/bloc/tapper_event.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/features/tapper/presentation/bloc/tapper_state.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/tapper/presentation/bloc/tapper_state.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/features/tapper/presentation/screens/tap_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/tapper/presentation/screens/tap_screen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/features/tapper/presentation/screens/tap_statistic_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/tapper/presentation/screens/tap_statistic_screen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/features/tapper/presentation/views/tap_view.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/tapper/presentation/views/tap_view.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/features/tapper/presentation/widgets/example_widget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/core/modules/weather/data/datasources/weather_remote_data_source.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,21 +89,28 @@
     &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
     &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
     &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feat/weather&quot;,
     &quot;io.flutter.reload.alreadyRun&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/o-maisan.auliya/StudioProjects/flutter-clean-architecture-tdd-template/lib/src/features/navigation/presentation/widgets&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/o-maisan.auliya/StudioProjects/flutter-clean-architecture-tdd-template/lib/src/core/modules&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;live.edit.configurable&quot;,
     &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;
+  },
+  &quot;keyToStringList&quot;: {
+    &quot;com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File&quot;: [
+      &quot;JSON&quot;
+    ]
   }
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\o-maisan.auliya\StudioProjects\flutter-clean-architecture-tdd-template\lib\src\core\modules" />
       <recent name="C:\Users\o-maisan.auliya\StudioProjects\flutter-clean-architecture-tdd-template\lib\src\features\navigation\presentation\widgets" />
     </key>
   </component>
   <component name="RunManager">
     <configuration name="main.dart" type="FlutterRunConfigurationType" factoryName="Flutter">
+      <option name="additionalArgs" value="--dart-define-from-file=env.json" />
       <option name="filePath" value="$PROJECT_DIR$/lib/main.dart" />
       <method v="2" />
     </configuration>

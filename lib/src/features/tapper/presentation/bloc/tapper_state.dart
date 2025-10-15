@@ -141,3 +141,25 @@ final class CounterStopped extends TapperState {
   @override
   List<Object?> get props => [count];
 }
+
+final class GetTodayWeatherSuccess extends TapperState {
+  final CoreWeather todayWeather;
+
+  const GetTodayWeatherSuccess(this.todayWeather);
+
+  @override
+  List<Object?> get props => [todayWeather];
+}
+
+final class GetTodayWeatherLoading extends TapperState {
+  const GetTodayWeatherLoading();
+}
+
+final class GetTodayWeatherError extends TapperState {
+  final String errorMessage;
+
+  const GetTodayWeatherError(this.errorMessage);
+
+  @override
+  List<Object?> get props => [errorMessage];
+}

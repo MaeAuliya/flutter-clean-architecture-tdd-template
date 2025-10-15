@@ -36,3 +36,7 @@ final class GetTodayTapPerDayEvent extends TapperEvent {
 final class GoToRepositoryEvent extends TapperEvent {
   const GoToRepositoryEvent();
 }
+
+final class GetTodayWeatherEvent extends TapperEvent {
+  const GetTodayWeatherEvent();
+}
