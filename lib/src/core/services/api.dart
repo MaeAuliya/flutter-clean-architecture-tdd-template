@@ -31,12 +31,9 @@
 class API {
   /// {@macro api}
   final ExampleAPI exampleAPI;
-  final WeatherAPI weatherAPI;
 
   /// {@macro api}
-  const API()
-    : exampleAPI = const ExampleAPI(),
-      weatherAPI = const WeatherAPI();
+  const API() : exampleAPI = const ExampleAPI();
 
   /// The base URL for the API, retrieved from env `BASE_URL`.
   String get baseUrl => const String.fromEnvironment("BASE_URL");
@@ -59,10 +56,4 @@ class ExampleAPI {
 
   /// Example endpoint retrieved from env `EXAMPLE`.
   String get example => const String.fromEnvironment("EXAMPLE");
-}
-
-class WeatherAPI {
-  const WeatherAPI();
-
-  String get weather => const String.fromEnvironment("WEATHER_URL");
 }

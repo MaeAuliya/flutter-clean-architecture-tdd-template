@@ -5,10 +5,8 @@ import 'package:provider/provider.dart';
 import 'src/core/res/app_theme.dart';
 import 'src/core/services/injection_container.dart';
 import 'src/core/services/router.dart';
-import 'src/features/navigation/presentation/providers/navigation_controller.dart';
-import 'src/features/tapper/presentation/providers/tapper_provider.dart';
-import 'src/features/tapper/presentation/providers/weather_provider.dart';
-import 'src/features/tapper/presentation/screens/splash_screen.dart';
+import 'src/features/template/presentation/providers/template_provider.dart';
+import 'src/features/template/presentation/screens/splash_screen.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
 
@@ -32,11 +30,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => TapperProvider()),
-        ChangeNotifierProvider(create: (_) => WeatherProvider()),
-        ChangeNotifierProvider(create: (_) => NavigationController()),
-
         /// Example Features
+        ChangeNotifierProvider(create: (_) => TemplateProvider()),
         // ChangeNotifierProvider(create: (_) => ExampleProvider()),
       ],
       child: MaterialApp(

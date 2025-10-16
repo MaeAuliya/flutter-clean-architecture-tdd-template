@@ -93,6 +93,14 @@ class Texts {
       'Phone number must be no more than 15 digits.';
   static const emailInvalidValidator = 'Please enter a valid email address.';
 
+  // Template
+  static const templateTitle =
+      'This is a template project — not a finished application.';
+  static const templateDesc =
+      'This repository provides a starting point for building Flutter apps using Clean Architecture and Test-Driven Development (TDD) principles.\nIt focuses on structure, scalability, and testability — so you can easily extend it for your own use cases.';
+  static const templateDesc2 =
+      'Feel free to explore, experiment, and make it your own. Every great app starts from a clean foundation.';
+  static const visitMe = 'Visit me on github:';
   static const statisticsDummyDesc =
       'This is your Statistic Page — a space designed for creativity and exploration. Use this page to visualize data, track progress, or showcase any form of analytics that fits your app’s purpose. Feel free to customize the layout, charts, and metrics to match your own idea — whether it’s user activity, performance trends, achievements, or something entirely new. Make it yours.';
 }

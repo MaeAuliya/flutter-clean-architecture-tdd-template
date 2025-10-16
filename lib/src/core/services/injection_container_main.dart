@@ -7,7 +7,6 @@ Future<void> initDependencies() async {
   final dio = Dio();
   final api = const API();
   final packageInfo = await PackageInfo.fromPlatform();
-  final database = await LocalDatabase.initLocalDatabase();
 
   // For Cores
   await _initCore(
@@ -15,15 +14,15 @@ Future<void> initDependencies() async {
     dio: dio,
     api: api,
     packageInfo: packageInfo,
-    database: database,
   );
   // For Features
   await Future.wait([
-    _initWeatherService(),
-    _initTapper(),
-    // Feature A
-    // Feature B
-    // Feature C
+    // // Services
+    // _initExampleService(),
+
+    // // Features
+    _initTemplate(),
+    // _initExample(),
   ]);
 }
 
@@ -32,66 +31,83 @@ Future<void> _initCore({
   required Dio dio,
   required API api,
   required PackageInfo packageInfo,
-  required Database database,
 }) async {
   sl
     ..registerLazySingleton(() => preference)
     ..registerLazySingleton(() => dio)
     ..registerLazySingleton(() => api)
-    ..registerLazySingleton(() => packageInfo)
-    ..registerLazySingleton(() => database);
+    ..registerLazySingleton(() => packageInfo);
 }
 
-Future<void> _initWeatherService() async {
-  sl
-    // Usecases
-    ..registerLazySingleton(() => GetWeatherToday(repository: sl()))
-    // Repository
-    ..registerLazySingleton<WeatherRepository>(
-      () => WeatherRepositoryImpl(
-        remoteDataSource: sl(),
-      ),
-    )
-    // Data Sources
-    ..registerLazySingleton<WeatherRemoteDataSource>(
-      () => WeatherRemoteDataSourceImpl(
-        dio: sl(),
-        api: sl(),
-      ),
-    );
-}
+// Future<void> _initExampleService() async {
+//   sl
+//     // Usecases
+//     ..registerLazySingleton(() => GetExampleService(repository: sl()))
+//     // Repository
+//     ..registerLazySingleton<ServiceRepository>(
+//       () => ServiceRepositoryImpl(
+//         remoteDataSource: sl(),
+//       ),
+//     )
+//     // Data Sources
+//     ..registerLazySingleton<ServiceRemoteDataSource>(
+//       () => ServiceRemoteDataSourceImpl(
+//         dio: sl(),
+//         api: sl(),
+//       ),
+//     );
+// }
 
-Future<void> _initTapper() async {
+Future<void> _initTemplate() async {
   sl
     // Bloc
     ..registerFactory(
-      () => TapperBloc(
-        getAllTapPerDay: sl(),
-        getTodayTapPerDay: sl(),
-        goToRepository: sl(),
-        longPress: sl(),
-        tap: sl(),
-        getWeatherToday: sl(),
+      () => TemplateBloc(
+        getCurrentTemplateVersion: sl(),
+        openGithubUrl: sl(),
       ),
     )
     // Usecases
-    ..registerLazySingleton(() => GetAllTapPerDay(repository: sl()))
-    ..registerLazySingleton(() => GetTodayTapPerDay(repository: sl()))
-    ..registerLazySingleton(() => GoToRepository(repository: sl()))
-    ..registerLazySingleton(() => LongPress(repository: sl()))
-    ..registerLazySingleton(() => Tap(repository: sl()))
+    ..registerLazySingleton(() => GetCurrentTemplateVersion(repository: sl()))
+    ..registerLazySingleton(() => OpenGithubUrl(repository: sl()))
     // Repository
-    ..registerLazySingleton<TapperRepository>(
-      () => TapperRepositoryImpl(
+    ..registerLazySingleton<TemplateRepository>(
+      () => TemplateRepositoryImpl(
         remoteDataSource: sl(),
         localDataSource: sl(),
       ),
     )
     // Data Sources
-    ..registerLazySingleton<TapperLocalDataSource>(
-      () => TapperLocalDataSourceImpl(db: sl()),
+    ..registerLazySingleton<TemplateLocalDataSource>(
+      () => TemplateLocalDataSourceImpl(packageInfo: sl()),
     )
-    ..registerLazySingleton<TapperRemoteDataSource>(
-      () => const TapperRemoteDataSourceImpl(),
+    ..registerLazySingleton<TemplateRemoteDataSource>(
+      () => const TemplateRemoteDataSourceImpl(),
     );
 }
+
+// Future<void> _initExampleFeature() async {
+//   sl
+//     // Bloc
+//     ..registerFactory(
+//       () => ExampleBloc(
+//         getExample: sl(),
+//       ),
+//     )
+//     // Usecases
+//     ..registerLazySingleton(() => GetExample(repository: sl()))
+//     // Repository
+//     ..registerLazySingleton<ExampleRepository>(
+//       () => ExampleRepositoryImpl(
+//         remoteDataSource: sl(),
+//         localDataSource: sl(),
+//       ),
+//     )
+//     // Data Sources
+//     ..registerLazySingleton<ExampleLocalDataSource>(
+//       () => const ExampleLocalDataSourceImpl(),
+//     )
+//     ..registerLazySingleton<ExampleRemoteDataSource>(
+//       () => const ExampleRemoteDataSourceImpl(),
+//     );
+// }

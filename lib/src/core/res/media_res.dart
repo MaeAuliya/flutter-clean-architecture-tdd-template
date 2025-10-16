@@ -59,6 +59,7 @@ class MediaRes {
   // =====================
   /// Example SVG icon.
   /// Replace `.svg` with the actual file name in your `assets/icons` folder.
+  static const githubIcon = '$_baseIcons/github_icon.svg';
   static const exampleIcon = '$_baseIcons/.svg';
 
   // =====================

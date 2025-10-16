@@ -5,25 +5,26 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case SplashScreen.routeName:
       return _pageBuilder(
         (_) => BlocProvider(
-          create: (_) => sl<TapperBloc>(),
+          create: (_) => sl<TemplateBloc>(),
           child: const SplashScreen(),
         ),
         settings: settings,
       );
-    case TapStatisticScreen.routeName:
+    case TemplateScreen.routeName:
       return _pageBuilder(
         (_) => BlocProvider(
-          create: (_) => sl<TapperBloc>(),
-          child: const TapStatisticScreen(),
+          create: (_) => sl<TemplateBloc>(),
+          child: const TemplateScreen(),
         ),
         settings: settings,
       );
-    // Bottom Navigation
-    case BottomNavigationCore.routeName:
-      return _pageBuilder(
-        (_) => const BottomNavigationCore(),
-        settings: settings,
-      );
+
+    // // Bottom Navigation
+    // case BottomNavigationCore.routeName:
+    //   return _pageBuilder(
+    //     (_) => const BottomNavigationCore(),
+    //     settings: settings,
+    //   );
     default:
       return _pageBuilder(
         (_) => const PageUnderConstruction(),
