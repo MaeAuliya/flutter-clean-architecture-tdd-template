@@ -177,11 +177,11 @@ flutter test
 
 This **TDD Clean Architecture Template** has been used as the foundation for several real and experimental apps — proving its scalability, modularity, and test-driven reliability in real-world use cases.
 
-| App Name | Description | Repository |
-|-----------|--------------|-------------|
-| 🖱️ **Tapper Plus App** | Example app for experimenting with **local** and **remote data sources**, fully developed with **TDD** and **Clean Architecture**. | [tapper-plus-app]([https://github.com/<your-username>/tapper-plus-app](https://github.com/MaeAuliya/tapper-plus-app)) |
-| 🌦️ **Weatherly Demo** | Minimal demo showcasing **REST API integration** and **repository pattern** implementation. | *(Coming Soon)* |
-| 💰 **Money Manager** | Personal finance management app with **biometric authentication**, **secure local storage**, and **expense analytics**. | *(Coming soon)* |
+| App Name | Description | Repository                                                                                                      |
+|-----------|--------------|-----------------------------------------------------------------------------------------------------------------|
+| 🖱️ **Tapper Plus App** | Example app for experimenting with **local** and **remote data sources**, fully developed with **TDD** and **Clean Architecture**. | [tapper-plus-app]([https://github.com/MaeAuliya/tapper-plus-app]) |
+| 🌦️ **Weatherly Demo** | Minimal demo showcasing **REST API integration** and **repository pattern** implementation. | *(Coming Soon)*                                                                                                 |
+| 💰 **Money Manager** | Personal finance management app with **biometric authentication**, **secure local storage**, and **expense analytics**. | *(Coming soon)*                                                                                                 |
 
 > 💡 Have you built your own app using this template?  
 > Feel free to **open a pull request** and showcase your project here!  
