@@ -11,6 +11,10 @@ final class TemplateInit extends TemplateState {
   const TemplateInit();
 }
 
+final class TemplateReset extends TemplateState {
+  const TemplateReset();
+}
+
 final class GetCurrentTemplateVersionSuccess extends TemplateState {
   final TemplateVersion templateVersion;
 

@@ -18,6 +18,9 @@ class TemplateBloc extends Bloc<TemplateEvent, TemplateState> {
   }) : _getCurrentTemplateVersion = getCurrentTemplateVersion,
        _openGithubUrl = openGithubUrl,
        super(const TemplateInit()) {
+    on<TemplateEvent>((_, emit) {
+      emit(const TemplateReset());
+    });
     on<GetCurrentTemplateVersionEvent>(_getCurrentTemplateVersionHandler);
     on<OpenGithubUrlEvent>(_openGithubUrlHandler);
     on<SplashScreenMoveEvent>(_splashScreenMoveHandler);
