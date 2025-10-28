@@ -179,7 +179,7 @@ This **TDD Clean Architecture Template** has been used as the foundation for sev
 
 | App Name | Description | Repository                                                                                                      |
 |-----------|--------------|-----------------------------------------------------------------------------------------------------------------|
-| 🖱️ **Tapper Plus App** | Example app for experimenting with **local** and **remote data sources**, fully developed with **TDD** and **Clean Architecture**. | [tapper-plus-app]([https://github.com/MaeAuliya/tapper-plus-app]) |
+| 🖱️ **Tapper Plus App** | Example app for experimenting with **local** and **remote data sources**, fully developed with **TDD** and **Clean Architecture**. | [tapper-plus-app][https://github.com/MaeAuliya/tapper-plus-app] |
 | 🌦️ **Weatherly Demo** | Minimal demo showcasing **REST API integration** and **repository pattern** implementation. | *(Coming Soon)*                                                                                                 |
 | 💰 **Money Manager** | Personal finance management app with **biometric authentication**, **secure local storage**, and **expense analytics**. | *(Coming soon)*                                                                                                 |
 
@@ -197,6 +197,7 @@ This **TDD Clean Architecture Template** has been used as the foundation for sev
 
 Planned updates for this template:
 
-- [ ] **CI/CD Workflow** using GitHub Actions (Flutter analyze + test)  
+- [x] **CI/CD Workflow** using GitHub Actions (Flutter analyze + test)  
 - [ ] Example implementation of a **core module** (e.g., error handling, app theme)  
-- [ ] Pre-configured **Firebase setup guide**  
+- [ ] Pre-configured **Firebase setup guide**
+- [ ] Automation Deploy to **Play Store** or **App Store** with **Fastlane**  
