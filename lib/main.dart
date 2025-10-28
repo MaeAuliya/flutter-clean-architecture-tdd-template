@@ -3,8 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import 'src/core/res/app_theme.dart';
-import 'src/core/services/injection_container.dart';
-import 'src/core/services/router.dart';
+import 'src/core/services/dependency_injection/injection_container.dart';
+import 'src/core/services/router/router.dart';
 import 'src/features/template/presentation/providers/template_provider.dart';
 import 'src/features/template/presentation/screens/splash_screen.dart';
 

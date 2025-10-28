@@ -36,7 +36,8 @@ Future<void> _initCore({
     ..registerLazySingleton(() => preference)
     ..registerLazySingleton(() => dio)
     ..registerLazySingleton(() => api)
-    ..registerLazySingleton(() => packageInfo);
+    ..registerLazySingleton(() => packageInfo)
+    ..registerLazySingleton<UrlLauncherGateway>(() => UrlLauncherGatewayImpl());
 }
 
 // Future<void> _initExampleService() async {
@@ -82,7 +83,7 @@ Future<void> _initTemplate() async {
       () => TemplateLocalDataSourceImpl(packageInfo: sl()),
     )
     ..registerLazySingleton<TemplateRemoteDataSource>(
-      () => const TemplateRemoteDataSourceImpl(),
+      () => TemplateRemoteDataSourceImpl(urlLauncherGateway: sl()),
     );
 }
 

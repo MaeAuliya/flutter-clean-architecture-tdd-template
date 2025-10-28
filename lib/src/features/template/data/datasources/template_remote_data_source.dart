@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../core/errors/exception.dart';
+import '../../../../core/services/url_launcher_gateway/url_launcher_gateway.dart';
 
 abstract class TemplateRemoteDataSource {
   const TemplateRemoteDataSource();
@@ -10,7 +11,11 @@ abstract class TemplateRemoteDataSource {
 }
 
 class TemplateRemoteDataSourceImpl implements TemplateRemoteDataSource {
-  const TemplateRemoteDataSourceImpl();
+  final UrlLauncherGateway _urlLauncherGateway;
+
+  const TemplateRemoteDataSourceImpl({
+    required UrlLauncherGateway urlLauncherGateway,
+  }) : _urlLauncherGateway = urlLauncherGateway;
 
   @override
   Future<void> openGithubUrl() async {
@@ -19,11 +24,18 @@ class TemplateRemoteDataSourceImpl implements TemplateRemoteDataSource {
 
       final uriLink = Uri.parse(link);
 
-      if (await canLaunchUrl(uriLink)) {
-        await launchUrl(
+      if (await _urlLauncherGateway.canLaunch(uriLink)) {
+        final isLaunch = await _urlLauncherGateway.launch(
           uriLink,
           mode: LaunchMode.externalApplication,
         );
+
+        if (!isLaunch) {
+          throw const ServerException(
+            message: 'Could`nt open Github',
+            statusCode: 599,
+          );
+        }
       } else {
         throw const ServerException(
           message: 'Could`nt open Github',
