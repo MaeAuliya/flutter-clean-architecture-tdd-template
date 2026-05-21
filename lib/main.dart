@@ -3,9 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import 'src/core/res/app_theme.dart';
-import 'src/core/services/dependency_injection/injection_container.dart';
+import 'src/core/services/injection/injection_container.dart';
+import 'src/core/services/providers/app_providers.dart';
 import 'src/core/services/router/router.dart';
-import 'src/features/template/presentation/providers/template_provider.dart';
 import 'src/features/template/presentation/screens/splash_screen.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
@@ -17,7 +17,7 @@ void main() async {
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
   // // Init Dependencies
-  await initDependencies();
+  await InjectionContainer.init(sl);
 
   // Run App
   runApp(const MyApp());
@@ -29,11 +29,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [
-        /// Example Features
-        ChangeNotifierProvider(create: (_) => TemplateProvider()),
-        // ChangeNotifierProvider(create: (_) => ExampleProvider()),
-      ],
+      providers: AppProviders.providers,
       child: MaterialApp(
         title: 'Flutter Clean Architecture TDD Template',
         showPerformanceOverlay: false,

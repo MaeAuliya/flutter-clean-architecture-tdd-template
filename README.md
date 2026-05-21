@@ -1,203 +1,166 @@
-# 🧩 Flutter Clean Architecture TDD Template
+# Flutter Clean Architecture TDD Template
 
-[![Flutter](https://img.shields.io/badge/Flutter-3.35.xx-blue?logo=flutter&logoColor=white)](https://flutter.dev)
-[![Dart](https://img.shields.io/badge/Dart-3.9.xx-0175C2?logo=dart&logoColor=white)](https://dart.dev)
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+A public Flutter starter template for building scalable, testable mobile apps with Feature-Based Clean Architecture, TDD-friendly structure, and Codex-ready project documentation.
 
+## Overview
 
-A **Flutter project template** based on **Clean Architecture** and **Test-Driven Development (TDD)**.  
-This repository provides a scalable, maintainable, and modular project structure to help you kickstart new Flutter applications with best practices in mind.
+This repository provides a ready-to-extend Flutter app foundation with clear boundaries between data, domain, and presentation layers. It includes local file generator tools, modular dependency injection, provider and route registries, and documentation that helps both humans and AI coding agents follow the same implementation rules.
 
----
+## Main Features
 
-## 🚀 Tech Stack
+- Feature-Based Clean Architecture
+- TDD-friendly folder structure
+- Bloc/Cubit-ready presentation layer
+- Provider registry through `app_providers.dart`
+- Route registry per feature
+- Screen + View presentation pattern
+- Modular GetIt dependency injection
+- Local file generator tools for features and modules
+- Codex-ready guidance through `AGENTS.md` and `docs/`
 
-### Framework & Language
-- Flutter **3.35.xx**
-- Dart **3.9.xx**
+## Project Structure
 
-### Architecture & State Management
-- [Bloc](https://pub.dev/packages/flutter_bloc) – primary state management
-- [Flutter Bloc](https://pub.dev/packages/flutter_bloc) - Flutter widgets that make it easy to integrate blocs
-- [Provider](https://pub.dev/packages/provider) – data binding
-- [getIt](https://pub.dev/packages/get_it) – dependency injection
-- [Equatable](https://pub.dev/packages/equatable) – value equality
-- [Dartz](https://pub.dev/packages/dartz) - Either Success or Failure Handler
-- [flutter_lints](https://pub.dev/packages/flutter_lints) – linting & code style
-
-### Data & API
-- [Dio](https://pub.dev/packages/dio) – HTTP client
-- [Shared Preferences](https://pub.dev/packages/shared_preferences) – key-value storage
-
-### Utilities
-- [flutter_svg](https://pub.dev/packages/flutter_svg) – SVG rendering
-- [lottie](https://pub.dev/packages/lottie) – animations
-- [url_launcher](https://pub.dev/packages/url_launcher) – external URL launcher
-- [package_info_plus](https://pub.dev/packages/package_info_plus) – app versioning
-
-### Testing
-- [flutter_test](https://api.flutter.dev/flutter/flutter_test/flutter_test-library.html) – unit testing
-- [mocktail](https://pub.dev/packages/mocktail) – mocking
-- [bloc_test](https://pub.dev/packages/bloc_test) – bloc testing utilities
-
----
-
-## 📂 Project Structure
 ```text
-project_root/
-│
-├── android/                # Native Android project
-├── ios/                    # Native iOS project
-├── assets/
-│   ├── animations/         # Lottie animations
-│   ├── fonts/              # Custom fonts
-│   ├── icons/              # App icons
-│   ├── images/             # PNG/JPG images
-│   └── vectors/            # SVG vector files
-│
-├── lib/
-│   └── main.dart           # Main Program
-│   └── src/
-│       ├── core/                   
-│       │   ├── enums/              # App-wide enumerations
-│       │   ├── errors/             # Error handling & exceptions
-│       │   ├── extensions/         # Dart extensions
-│       │   ├── res/                # Resources (colors, typography, etc.)
-│       │   ├── services/           # External services (API, Firebase, etc.)
-│       │   ├── shared/             # Shared widgets/components
-│       │   ├── usecases/           # Contract Abstraction for usecase pattern
-│       │   ├── utils/              # Utility helpers
-│       │   └── modules/            # Reusable domain/data modules
-│       │       └── sample_module/  
-│       │           ├── domain/
-│       │           │   ├── entities/
-│       │           │   │   └── sample_entity.dart
-│       │           │   ├── repositories/
-│       │           │   │   └── sample_repository.dart
-│       │           │   └── usecases/
-│       │           │       └── sample_usecase.dart
-│       │           └── data/
-│       │               ├── datasources/
-│       │               │   └── sample_remote_data_source.dart
-│       │               └── repositories/
-│       │                   └── sample_repository_impl.dart
-│       │
-│       └── features/
-│           └── feature_a/
-│               ├── data/
-│               │   ├── datasources/
-│               │   │   ├── feature_a_remote_data_source.dart
-│               │   │   └── feature_a_local_data_source.dart
-│               │   ├── models/
-│               │   │   └── feature_a_model.dart
-│               │   └── repositories/
-│               │       └── feature_a_repository_impl.dart
-│               │
-│               ├── domain/
-│               │   ├── entities/
-│               │   │   └── feature_a_entity.dart
-│               │   ├── repositories/
-│               │   │   └── feature_a_repository.dart
-│               │   └── usecases/
-│               │       └── get_feature_a_items.dart
-│               │
-│               └── presentation/
-│                   ├── bloc/
-│                   │   ├── feature_a_bloc.dart
-│                   │   ├── feature_a_event.dart
-│                   │   └── feature_a_state.dart
-│                   ├── providers/
-│                   │   └── feature_a_provider.dart
-│                   ├── screens/
-│                   │   └── feature_a_screen.dart
-│                   ├── shimmer_views/
-│                   │   └── feature_a_list_shimmer.dart
-│                   ├── views/
-│                   │   └── feature_a_list_view.dart
-│                   └── widgets/
-│                       └── feature_a_card.dart
-│
-├── test/
-│   ├── core/
-│   │   └── modules/
-│   │       └── sample_module/
-│   │           ├── domain/
-│   │           │   └── usecases/sample_usecase_test.dart
-│   │           └── data/
-│   │               └── repositories/sample_repository_impl_test.dart
-│   │
-│   └── features/
-│       └── feature_a/
-│           ├── data/
-│           │   ├── datasources/
-│           │   │   └── feature_a_remote_data_source_test.dart
-│           │   ├── models/
-│           │   │   └── feature_a_model_test.dart
-│           │   └── repositories/
-│           │       └── feature_a_repository_impl_test.dart
-│           │
-│           ├── domain/
-│           │   ├── entities/
-│           │   │   └── feature_a_entity_test.dart
-│           │   ├── repositories/
-│           │   │   └── feature_a_repository_test.dart
-│           │   └── usecases/
-│           │       └── get_feature_a_items_test.dart
-│           │
-│           └── presentation/
-│               └── bloc/
-│                   └── feature_a_bloc_test.dart
-│
-└── pubspec.yaml
+lib/
+  main.dart
+  src/
+    core/
+      modules/
+      services/
+        injection/
+          injection_container.dart
+          injectors/
+        providers/app_providers.dart
+        router/
+          app_route.dart
+          app_routes.dart
+          router.dart
+          registries/
+      shared/
+      utils/
+    features/
+      template/
+        data/
+        domain/
+        presentation/
+test/
+  features/
+assets/
+docs/
+tools/
 ```
 
-## 🧪 Testing
+Features live in `lib/src/features/<feature_name>/` and are split into `data`, `domain`, and `presentation`. Reusable modules live under `lib/src/core/modules/<module_name>`. Tests should mirror the source structure.
 
-This project is set up for **unit testing only**:  
-- **Data layer** → datasources, models, repositories  
-- **Domain layer** → entities, repositories, usecases  
-- **Presentation layer** → bloc only
+## Codex-ready Workflow
 
-Run tests with:
+Before planning, coding, or reviewing, Codex must read `AGENTS.md` and the relevant files under `docs/`. Codex should use the local generator for supported feature/module changes, inspect generated files after creation, and inspect registry cleanup after deletion.
+
+## Documentation System
+
+- `AGENTS.md`: contributor and Codex operating rules.
+- `docs/README.md`: documentation map.
+- `docs/patterns/`: source of truth for implementation consistency.
+- `docs/product/`: product placeholders to update when this template becomes a real app.
+- `docs/TODO/next_steps.md`: roadmap ideas and future improvements.
+
+## File Generator Tools
+
+The generator creates and deletes Clean Architecture boilerplate consistently. Use lowercase snake case names, for example `user_profile` or `local_storage`.
+
+## Creating a Feature
 
 ```bash
-flutter test
+dart run tools/file_gen_main.dart feature <feature_name>
 ```
 
-## 📌 Notes
+A generated feature includes:
 
-- Features inside `features/` follow the **data → domain → presentation** pattern.  
-- `presentation` includes `bloc`, `providers`, `screens`, `views`, `widgets`, and `shimmer_views`, but **only the bloc layer is unit tested**.  
-- Core modules can be added in `lib/src/core/` for reusable code.  
-- This template is designed to be scalable for small to enterprise-level applications.  
+- data layer
+- domain layer
+- presentation layer
+- provider
+- screen
+- view
+- injector
+- route registry
+- provider registry entry
+- route registry entry
+- dependency injection registry entry
 
----
+Feature providers must be registered through `lib/src/core/services/providers/app_providers.dart`, not directly in `main.dart`. Routes must be registered through feature route registries, not switch-cases inside `router.dart`.
 
-## 🚀 Apps Built with This Template  
+## Creating a Module
 
-This **TDD Clean Architecture Template** has been used as the foundation for several real and experimental apps — proving its scalability, modularity, and test-driven reliability in real-world use cases.
+```bash
+dart run tools/file_gen_main.dart module <module_name>
+```
 
-| App Name | Description | Repository                                                                                                      |
-|-----------|--------------|-----------------------------------------------------------------------------------------------------------------|
-| 🖱️ **Tapper Plus App** | Example app for experimenting with **local** and **remote data sources**, fully developed with **TDD** and **Clean Architecture**. | [tapper-plus-app][https://github.com/MaeAuliya/tapper-plus-app] |
-| 🌦️ **Weatherly Demo** | Minimal demo showcasing **REST API integration** and **repository pattern** implementation. | *(Coming Soon)*                                                                                                 |
-| 💰 **Money Manager** | Personal finance management app with **biometric authentication**, **secure local storage**, and **expense analytics**. | *(Coming soon)*                                                                                                 |
+Generated modules are placed under:
 
-> 💡 Have you built your own app using this template?  
-> Feel free to **open a pull request** and showcase your project here!  
+```text
+lib/src/core/modules/<module_name>
+```
 
----
+Modules are reusable core structures and do not include presentation layer files.
 
-### 🧱 Why List These Apps?  
-- To demonstrate **real implementations** of this architecture.  
-- To inspire other developers using this template.  
-- To serve as a **reference hub** for common Clean Architecture + TDD patterns. 
+## Deleting a Feature
 
-## 🔮 Upcoming Features
+```bash
+dart run tools/file_gen_main.dart delete feature <feature_name>
+```
+
+The delete command removes generated feature files and cleans related provider, route, and dependency injection registry entries. Inspect the cleanup afterward.
+
+## Deleting a Module
+
+```bash
+dart run tools/file_gen_main.dart delete module <module_name>
+```
+
+The delete command removes generated module files and related registry entries when applicable. Inspect the cleanup afterward.
+
+## Turning This Template Into a Real Project
+
+Update `docs/product/` with the product vision, target users, information architecture, user flows, design direction, and visual system. Replace template copy, app naming, routes, providers, and initial feature setup as needed.
+
+When this template is used for a real product, the example `template` feature may be removed after the real initial feature, route, provider, and dependency setup are ready.
+
+Suggested command:
+
+```bash
+dart run tools/file_gen_main.dart delete feature template
+```
+
+Do not delete the `template` feature before replacing app dependencies that still point to it, such as:
+
+- initial route
+- splash screen
+- route registry
+- provider registry
+- dependency injection
+- sample imports
+
+Codex may suggest this cleanup when converting the repository into a real project, but must not delete `template` automatically unless explicitly requested.
+
+## Verification Commands
+
+```bash
+flutter pub get
+dart format .
+flutter analyze
+flutter test
+flutter test --concurrency=4
+```
+
+CI runs dependency fetch, static analysis, and tests for pushes and pull requests to `master` and `develop`.
+
+## Upcoming Features
 
 Planned updates for this template:
 
-- [x] **CI/CD Workflow** using GitHub Actions (Flutter analyze + test)  
-- [ ] Example implementation of a **core module** (e.g., error handling, app theme)  
+- [x] **CI/CD Workflow** using GitHub Actions (Flutter analyze + test)
+- [x] **AI Integration** using Codex
+- [ ] Example implementation of a **core module** (e.g., error handling, app theme)
 - [ ] Pre-configured **Firebase setup guide**
 - [ ] Automation Deploy to **Play Store** or **App Store** with **Fastlane**  

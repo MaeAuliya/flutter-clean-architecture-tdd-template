@@ -1,10 +1,31 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../features/template/presentation/bloc/template_bloc.dart';
-import '../../../features/template/presentation/screens/splash_screen.dart';
-import '../../../features/template/presentation/screens/template_screen.dart';
 import '../../shared/screens/page_under_construction.dart';
-import '../dependency_injection/injection_container.dart';
+import 'app_routes.dart';
 
-part 'router_main.dart';
+Route<dynamic> generateRoute(RouteSettings settings) {
+  final routeBuilder = AppRoutes.routeMap[settings.name];
+
+  if (routeBuilder != null) {
+    return _pageBuilder(
+      (context) => routeBuilder(context, settings),
+      settings: settings,
+    );
+  }
+
+  return _pageBuilder(
+    (_) => const PageUnderConstruction(),
+    settings: settings,
+  );
+}
+
+PageRouteBuilder<dynamic> _pageBuilder(
+  Widget Function(BuildContext) page, {
+  required RouteSettings? settings,
+}) {
+  return PageRouteBuilder(
+    settings: settings,
+    pageBuilder: (context, _, __) => page(context),
+    barrierDismissible: false,
+  );
+}
