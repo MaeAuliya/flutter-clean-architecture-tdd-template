@@ -161,6 +161,7 @@ Planned updates for this template:
 
 - [x] **CI/CD Workflow** using GitHub Actions (Flutter analyze + test)
 - [x] **AI Integration** using Codex
+- [x] add **File generator** tools for creating features or modules
 - [ ] Example implementation of a **core module** (e.g., error handling, app theme)
 - [ ] Pre-configured **Firebase setup guide**
 - [ ] Automation Deploy to **Play Store** or **App Store** with **Fastlane**  
