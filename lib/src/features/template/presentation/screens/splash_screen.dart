@@ -6,6 +6,7 @@ import '../../../../core/res/colours.dart';
 import '../../../../core/res/fonts.dart';
 import '../../../../core/res/typography.dart';
 import '../bloc/template_bloc.dart';
+import '../extensions/template_context_extension.dart';
 import 'template_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -20,8 +21,8 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
-    context.templateBloc.add(const SplashScreenMoveEvent());
     super.initState();
+    context.templateBloc.add(const SplashScreenMoveEvent());
   }
 
   @override
@@ -36,6 +37,7 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Container(
           width: context.width,
           height: context.height,
+          // Intrinsic template branding intentionally stays theme-independent.
           decoration: const BoxDecoration(
             gradient: LinearGradient(
               colors: [

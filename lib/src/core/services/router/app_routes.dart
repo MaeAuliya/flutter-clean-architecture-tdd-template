@@ -1,11 +1,11 @@
 import 'app_route.dart';
-import 'registries/template_route_registry.dart'; // GENERATED FEATURE ROUTE REGISTRY IMPORTS - DO NOT REMOVE
+import 'registries/template_route_registry.dart';// GENERATED FEATURE ROUTE REGISTRY IMPORTS - DO NOT REMOVE
 
 class AppRoutes {
   const AppRoutes._();
 
   static const List<FeatureRouteRegistry> _registries = [
-    TemplateRouteRegistry(), // GENERATED FEATURE ROUTE REGISTRIES - DO NOT REMOVE
+    TemplateRouteRegistry(),// GENERATED FEATURE ROUTE REGISTRIES - DO NOT REMOVE
   ];
 
   static Map<String, AppRouteBuilder> get routeMap => {

@@ -1,59 +1,33 @@
-/// {@template api}
-/// Centralized class to manage **all API endpoints** in the project.
-///
-/// This uses compile-time environment variables defined via
-/// `--dart-define-from-file`, ensuring that API keys and base URLs
-/// are not hardcoded in source code.
-///
-/// ---
-/// ### Setup
-/// Create an `env.json` file in the project root:
-/// ```json
-/// {
-///   "BASE_URL": "https://api.example.com",
-///   "EXAMPLE": "/v1/example"
-/// }
-/// ```
-///
-/// Run the app with:
-/// ```bash
-/// flutter run --dart-define-from-file=env.json
-/// ```
-///
-/// ---
-/// ### Usage
-/// ```dart
-/// final api = API();
-/// print(api.baseUrl);             // → https://api.example.com
-/// print(api.exampleAPI.example);  // → /v1/example
-/// ```
-/// {@endtemplate}
 class API {
-  /// {@macro api}
+  final String baseUrl;
   final ExampleAPI exampleAPI;
 
-  /// {@macro api}
-  const API() : exampleAPI = const ExampleAPI();
+  const API({
+    this.baseUrl = const String.fromEnvironment('BASE_URL'),
+    this.exampleAPI = const ExampleAPI(),
+  });
 
-  /// The base URL for the API, retrieved from env `BASE_URL`.
-  String get baseUrl => const String.fromEnvironment("BASE_URL");
+  List<String> missingKeys() => [
+    if (baseUrl.trim().isEmpty) 'BASE_URL',
+  ];
+
+  void validate() {
+    final missing = missingKeys();
+    if (missing.isNotEmpty) {
+      throw StateError('Missing build configuration: ${missing.join(', ')}');
+    }
+
+    final uri = Uri.tryParse(baseUrl);
+    if (uri == null || uri.scheme != 'https' || uri.host.isEmpty) {
+      throw StateError('Invalid build configuration: BASE_URL must be HTTPS.');
+    }
+  }
 }
 
-/// {@template example_api}
-/// Example subset of API endpoints.
-///
-/// Organize related endpoints into their own class for better modularity.
-///
-/// Example:
-/// ```dart
-/// final api = API();
-/// print(api.exampleAPI.example); // → /v1/example
-/// ```
-/// {@endtemplate}
 class ExampleAPI {
-  /// {@macro example_api}
-  const ExampleAPI();
+  final String example;
 
-  /// Example endpoint retrieved from env `EXAMPLE`.
-  String get example => const String.fromEnvironment("EXAMPLE");
+  const ExampleAPI({
+    this.example = const String.fromEnvironment('EXAMPLE'),
+  });
 }

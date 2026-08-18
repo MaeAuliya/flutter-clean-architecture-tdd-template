@@ -18,9 +18,6 @@ class TemplateBloc extends Bloc<TemplateEvent, TemplateState> {
   }) : _getCurrentTemplateVersion = getCurrentTemplateVersion,
        _openGithubUrl = openGithubUrl,
        super(const TemplateInit()) {
-    on<TemplateEvent>((_, emit) {
-      emit(const TemplateReset());
-    });
     on<GetCurrentTemplateVersionEvent>(_getCurrentTemplateVersionHandler);
     on<OpenGithubUrlEvent>(_openGithubUrlHandler);
     on<SplashScreenMoveEvent>(_splashScreenMoveHandler);
@@ -33,7 +30,7 @@ class TemplateBloc extends Bloc<TemplateEvent, TemplateState> {
     emit(const GetCurrentTemplateVersionLoading());
     final result = await _getCurrentTemplateVersion.call();
     result.fold(
-      (failure) => emit(GetCurrentTemplateVersionError(failure.message)),
+      (failure) => emit(GetCurrentTemplateVersionError(failure.userMessage)),
       (version) => emit(GetCurrentTemplateVersionSuccess(version)),
     );
   }
@@ -44,7 +41,7 @@ class TemplateBloc extends Bloc<TemplateEvent, TemplateState> {
   ) async {
     final result = await _openGithubUrl.call();
     result.fold(
-      (failure) => emit(OpenGithubUrlError(failure.message)),
+      (failure) => emit(OpenGithubUrlError(failure.userMessage)),
       (_) => emit(const OpenGithubUrlSuccess()),
     );
   }

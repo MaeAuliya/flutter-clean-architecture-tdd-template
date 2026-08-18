@@ -8,8 +8,10 @@ import 'package:flutter_clean_tdd_template/src/features/template/presentation/bl
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../domain/usecases/get_current_template_version_test.dart';
-import '../../domain/usecases/open_github_url_test.dart';
+class MockGetCurrentTemplateVersion extends Mock
+    implements GetCurrentTemplateVersion {}
+
+class MockOpenGithubUrl extends Mock implements OpenGithubUrl {}
 
 void main() {
   late GetCurrentTemplateVersion getCurrentTemplateVersion;
@@ -17,15 +19,9 @@ void main() {
 
   late TemplateBloc templateBloc;
 
-  const tServerFailure = ServerFailure(
-    message: 'message',
-    statusCode: 505,
-  );
+  const tServerFailure = ServerFailure(userMessage: 'message');
 
-  const tLocalFailure = LocalFailure(
-    message: 'message',
-    statusCode: 505,
-  );
+  const tStorageFailure = StorageFailure(userMessage: 'message');
 
   setUp(() {
     getCurrentTemplateVersion = MockGetCurrentTemplateVersion();
@@ -53,7 +49,6 @@ void main() {
         );
         return templateBloc;
       },
-      seed: () => const TemplateReset(),
       act: (bloc) {
         bloc.add(const GetCurrentTemplateVersionEvent());
       },
@@ -67,17 +62,16 @@ void main() {
       'Should emit [GetCurrentTemplateVersionError] when [GetCurrentTemplateVersionEvent] is added',
       build: () {
         when(() => getCurrentTemplateVersion()).thenAnswer(
-          (_) async => const Left(tLocalFailure),
+          (_) async => const Left(tStorageFailure),
         );
         return templateBloc;
       },
-      seed: () => const TemplateReset(),
       act: (bloc) {
         bloc.add(const GetCurrentTemplateVersionEvent());
       },
       expect: () => [
         const GetCurrentTemplateVersionLoading(),
-        GetCurrentTemplateVersionError(tLocalFailure.message),
+        GetCurrentTemplateVersionError(tStorageFailure.userMessage),
       ],
     );
   });
@@ -91,7 +85,6 @@ void main() {
         );
         return templateBloc;
       },
-      seed: () => const TemplateReset(),
       act: (bloc) {
         bloc.add(const OpenGithubUrlEvent());
       },
@@ -108,12 +101,11 @@ void main() {
         );
         return templateBloc;
       },
-      seed: () => const TemplateReset(),
       act: (bloc) {
         bloc.add(const OpenGithubUrlEvent());
       },
       expect: () => [
-        OpenGithubUrlError(tServerFailure.message),
+        OpenGithubUrlError(tServerFailure.userMessage),
       ],
     );
   });
@@ -127,9 +119,8 @@ void main() {
       act: (bloc) {
         bloc.add(const SplashScreenMoveEvent());
       },
-      seed: () => const TemplateReset(),
       wait: const Duration(milliseconds: 2100),
-      expect: () async => [
+      expect: () => [
         const SplashScreenDone(),
       ],
     );

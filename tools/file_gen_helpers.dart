@@ -13,10 +13,12 @@ import 'templates/domain/repository_template.dart';
 import 'templates/domain/usecase_get_template.dart';
 import 'templates/domain/usecase_update_template.dart';
 import 'templates/injector/injector_template.dart';
+import 'templates/presentation/extensions/context_extension_template.dart';
 import 'templates/presentation/screens/screen_template.dart';
 import 'templates/presentation/views/view_template.dart';
 import 'templates/providers/provider_template.dart';
 import 'templates/routes/route_registry_template.dart';
+import 'templates/test_templates.dart';
 
 class FileGenHelpers {
   static Future<void> mkdirs(List<String> paths) async {
@@ -92,120 +94,43 @@ class FileGenHelpers {
 
     var text = await containerFile.readAsString();
 
-    // Adding import lines
-    final importLine = (isModule)
+    // Adding import at its stable marker.
+    final importLine = isModule
         ? "import 'injectors/${name.snake}_module_injector.dart';"
         : "import 'injectors/${name.snake}_injector.dart';";
-    final importRegex = RegExp(r"^import .+;$", multiLine: true);
-    final matches = importRegex.allMatches(text).toList();
+    const importMarker = '// GENERATED INJECTOR IMPORTS - DO NOT REMOVE';
 
     if (!text.contains(importLine)) {
-      if (matches.isNotEmpty) {
-        final lastImport = matches.last;
-        final insertPos = lastImport.end;
-        text = text.replaceRange(insertPos, insertPos, '\n$importLine');
-      } else {
-        text = '$importLine\n$text';
+      if (!text.contains(importMarker)) {
+        stderr.writeln(
+          '❌ Injector import marker not found in injection_container.dart.',
+        );
+        exit(64);
       }
+      text = text.replaceFirst(importMarker, '$importLine\n$importMarker');
     }
 
-    // Adding Injector instance to list of injectors
-    final listRegex = RegExp(
-      r'static\s+const\s+_injectors\s*=\s*<Injector>\s*\[(?<body>[\s\S]*?)\];',
-    );
-    final match = listRegex.firstMatch(text);
-    final injectorEntry = (isModule)
-        ? ' ${name.pascal}ModuleInjector(),'
-        : ' ${name.pascal}Injector(),';
+    // Adding Injector instance at its stable marker.
+    final marker = isModule
+        ? '// GENERATED MODULE INJECTORS - DO NOT REMOVE'
+        : '// GENERATED FEATURE INJECTORS - DO NOT REMOVE';
+    final injectorEntry = isModule
+        ? '${name.pascal}ModuleInjector(),'
+        : '${name.pascal}Injector(),';
 
-    if (match != null) {
-      final body = match.namedGroup('body')!;
-      if (!body.contains(injectorEntry.trim())) {
-        final newBody = body.trim().isEmpty
-            ? ' $injectorEntry\n'
-            : '$body $injectorEntry\n ';
-        text = text.replaceRange(
-          match.start,
-          match.end,
-          match.group(0)!.replaceFirst(body, newBody),
+    if (!text.contains(injectorEntry)) {
+      if (!text.contains(marker)) {
+        stderr.writeln(
+          '❌ Injector marker not found in injection_container.dart.',
         );
+        exit(64);
       }
-    } else {
-      stderr.writeln(
-        '⚠️  Could not find _injectors list in injection_container.dart',
-      );
+      text = text.replaceFirst(marker, '$injectorEntry\n    $marker');
     }
 
     await containerFile.writeAsString(text);
     stdout.writeln(
       '✅ Integrated ${name.pascal}Injector into injection_container.dart',
-    );
-  }
-
-  // -----------------------------------------------------------------------------
-  // Auto-integrate Providers into app_provider.dart
-  // -----------------------------------------------------------------------------
-  static Future<void> _integrateProviderRegistry(NameCase name) async {
-    const providerRegistryPath =
-        'lib/src/core/services/providers/app_providers.dart';
-
-    const importMarker =
-        '// GENERATED FEATURE PROVIDER IMPORTS - DO NOT REMOVE';
-
-    const providerMarker = '// GENERATED FEATURE PROVIDERS - DO NOT REMOVE';
-
-    final file = File(providerRegistryPath);
-
-    if (!await file.exists()) {
-      stderr.writeln(
-        '❌ app_providers.dart not found at $providerRegistryPath.',
-      );
-      exit(64);
-    }
-
-    var text = await file.readAsString();
-
-    final importLine =
-        "import '../../../features/${name.snake}/presentation/providers/${name.snake}_provider.dart';";
-
-    final providerEntry =
-        '''
-        /// ${name.title} Feature
-        ChangeNotifierProvider(create: (_) => ${name.pascal}Provider()),
-''';
-
-    if (!text.contains(importLine)) {
-      if (!text.contains(importMarker)) {
-        stderr.writeln(
-          '❌ Provider import marker not found in app_providers.dart.',
-        );
-        exit(64);
-      }
-
-      text = text.replaceFirst(
-        importMarker,
-        '$importLine\n$importMarker',
-      );
-    }
-
-    if (!text.contains('${name.pascal}Provider()')) {
-      if (!text.contains(providerMarker)) {
-        stderr.writeln(
-          '❌ Provider registry marker not found in app_providers.dart.',
-        );
-        exit(64);
-      }
-
-      text = text.replaceFirst(
-        providerMarker,
-        '$providerEntry        $providerMarker',
-      );
-    }
-
-    await file.writeAsString(text);
-
-    stdout.writeln(
-      '✅ Registered ${name.pascal}Provider in app_providers.dart',
     );
   }
 
@@ -232,10 +157,7 @@ class FileGenHelpers {
 
     final importLine = "import 'registries/${name.snake}_route_registry.dart';";
 
-    final registryEntry =
-        '''
-    ${name.pascal}RouteRegistry(),
-''';
+    final registryEntry = '${name.pascal}RouteRegistry(),';
 
     if (!text.contains(importLine)) {
       if (!text.contains(importMarker)) {
@@ -261,7 +183,7 @@ class FileGenHelpers {
 
       text = text.replaceFirst(
         registryMarker,
-        '$registryEntry$registryMarker',
+        '$registryEntry\n    $registryMarker',
       );
     }
 
@@ -291,46 +213,49 @@ class FileGenHelpers {
 
     await write(
       '$base/domain/entities/${n.snake}_entity.dart',
-      EntityTemplate().moduleTpl(n) ?? EntityTemplate().featureTpl(n),
+      EntityTemplate().moduleTpl(n),
     );
     await write(
       '$base/domain/repositories/${n.snake}_repository.dart',
-      RepositoryTemplate().moduleTpl(n) ?? RepositoryTemplate().featureTpl(n),
+      RepositoryTemplate().moduleTpl(n),
     );
     await write(
       '$base/domain/usecases/get_${n.snake}.dart',
-      UsecaseGetTemplate().moduleTpl(n) ?? UsecaseGetTemplate().featureTpl(n),
+      UsecaseGetTemplate().moduleTpl(n),
     );
     await write(
       '$base/domain/usecases/update_${n.snake}.dart',
-      UsecaseUpdateTemplate().moduleTpl(n) ??
-          UsecaseUpdateTemplate().featureTpl(n),
+      UsecaseUpdateTemplate().moduleTpl(n),
     );
 
     await write(
       '$base/data/models/${n.snake}_model.dart',
-      ModelTemplate().moduleTpl(n) ?? ModelTemplate().featureTpl(n),
+      ModelTemplate().moduleTpl(n),
     );
     await write(
       '$base/data/datasources/${n.snake}_local_data_source.dart',
-      LocalDataSourceTemplate().moduleTpl(n) ??
-          LocalDataSourceTemplate().featureTpl(n),
+      LocalDataSourceTemplate().moduleTpl(n),
     );
     await write(
       '$base/data/datasources/${n.snake}_remote_data_source.dart',
-      RemoteDataSourceTemplate().moduleTpl(n) ??
-          RemoteDataSourceTemplate().featureTpl(n),
+      RemoteDataSourceTemplate().moduleTpl(n),
     );
     await write(
       '$base/data/repositories/${n.snake}_repository_impl.dart',
-      RepositoryImplTemplate().moduleTpl(n) ??
-          RepositoryImplTemplate().featureTpl(n),
+      RepositoryImplTemplate().moduleTpl(n),
     );
 
     await write(
       'lib/src/core/services/injection/injectors/${n.snake}_module_injector.dart',
-      InjectorTemplate().moduleTpl(n) ?? InjectorTemplate().featureTpl(n),
+      InjectorTemplate().moduleTpl(n),
     );
+    await _generateTests(
+      n,
+      sourcePrefix: 'src/core/modules/${n.snake}',
+      testPrefix: 'test/core/modules/${n.snake}',
+      includeBloc: false,
+    );
+
     await _integrateInjector(n, isModule: true);
   }
 
@@ -350,6 +275,7 @@ class FileGenHelpers {
       '$base/data/datasources',
       '$base/data/repositories',
       '$base/presentation/bloc',
+      '$base/presentation/extensions',
       '$base/presentation/providers',
       '$base/presentation/screens',
       '$base/presentation/views',
@@ -409,7 +335,11 @@ class FileGenHelpers {
       '$base/presentation/providers/${n.snake}_provider.dart',
       ProviderTemplate().featureTpl(n),
     );
-    await _integrateProviderRegistry(n);
+
+    await write(
+      '$base/presentation/extensions/${n.snake}_context_extension.dart',
+      ContextExtensionTemplate().featureTpl(n),
+    );
 
     await write(
       '$base/presentation/views/${n.snake}_view.dart',
@@ -430,7 +360,57 @@ class FileGenHelpers {
       RouteRegistryTemplate().featureTpl(n),
     );
 
+    await _generateTests(
+      n,
+      sourcePrefix: 'src/features/${n.snake}',
+      testPrefix: 'test/features/${n.snake}',
+      includeBloc: true,
+    );
+
     await _integrateInjector(n);
     await _integrateRouteRegistry(n);
+  }
+
+  static Future<void> _generateTests(
+    NameCase n, {
+    required String sourcePrefix,
+    required String testPrefix,
+    required bool includeBloc,
+  }) async {
+    await write(
+      '$testPrefix/domain/repositories/${n.snake}_repository.mock.dart',
+      TestTemplates.repositoryMock(n, sourcePrefix: sourcePrefix),
+    );
+    await write(
+      '$testPrefix/domain/usecases/get_${n.snake}_test.dart',
+      TestTemplates.getUseCaseTest(n, sourcePrefix: sourcePrefix),
+    );
+    await write(
+      '$testPrefix/domain/usecases/update_${n.snake}_test.dart',
+      TestTemplates.updateUseCaseTest(n, sourcePrefix: sourcePrefix),
+    );
+    await write(
+      '$testPrefix/data/datasources/${n.snake}_data_source.mock.dart',
+      TestTemplates.dataSourceMocks(n, sourcePrefix: sourcePrefix),
+    );
+    await write(
+      '$testPrefix/data/datasources/${n.snake}_data_source_test.dart',
+      TestTemplates.dataSourceTest(n, sourcePrefix: sourcePrefix),
+    );
+    await write(
+      '$testPrefix/data/repositories/${n.snake}_repository_impl_test.dart',
+      TestTemplates.repositoryTest(n, sourcePrefix: sourcePrefix),
+    );
+
+    if (!includeBloc) return;
+
+    await write(
+      '$testPrefix/presentation/bloc/${n.snake}_usecase.mock.dart',
+      TestTemplates.useCaseMocks(n, sourcePrefix: sourcePrefix),
+    );
+    await write(
+      '$testPrefix/presentation/bloc/${n.snake}_bloc_test.dart',
+      TestTemplates.blocTest(n, sourcePrefix: sourcePrefix),
+    );
   }
 }

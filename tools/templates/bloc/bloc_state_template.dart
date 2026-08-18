@@ -14,16 +14,13 @@ abstract class ${n.pascal}State extends Equatable {
   List<Object?> get props => [];
 }
 
-
 final class ${n.pascal}Initial extends ${n.pascal}State {
   const ${n.pascal}Initial();
 }
 
-
-final class ${n.pascal}Reset extends ${n.pascal}State {
-  const ${n.pascal}Reset();
+final class ${n.pascal}Loading extends ${n.pascal}State {
+  const ${n.pascal}Loading();
 }
-
 
 final class Get${n.pascal}Success extends ${n.pascal}State {
   final ${n.pascal}Entity ${n.camel}Entity;
@@ -34,8 +31,8 @@ final class Get${n.pascal}Success extends ${n.pascal}State {
   List<Object?> get props => [${n.camel}Entity];
 }
 
-final class ${n.pascal}Loading extends ${n.pascal}State {
-  const ${n.pascal}Loading();
+final class Update${n.pascal}Success extends ${n.pascal}State {
+  const Update${n.pascal}Success();
 }
 
 final class ${n.pascal}Error extends ${n.pascal}State {

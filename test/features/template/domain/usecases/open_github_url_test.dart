@@ -6,8 +6,6 @@ import 'package:mocktail/mocktail.dart';
 
 import '../repositories/template_repository.mock.dart';
 
-class MockOpenGithubUrl extends Mock implements OpenGithubUrl {}
-
 void main() {
   late TemplateRepository repository;
   late OpenGithubUrl useCase;
@@ -18,7 +16,7 @@ void main() {
   });
 
   test(
-    'Should call the [AuthenticationRepository.openGithubUrl]',
+    'Should call the [TemplateRepository.openGithubUrl]',
     () async {
       when(
         () => repository.openGithubUrl(),

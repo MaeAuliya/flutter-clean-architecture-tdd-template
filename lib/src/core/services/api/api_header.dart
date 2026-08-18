@@ -41,7 +41,7 @@ class APIHeaders {
     String? token,
     Map<String, String>? additionalHeaders,
   }) {
-    Map<String, String> headers = {'Accept': 'application/json'};
+    final headers = <String, String>{'Accept': 'application/json'};
 
     if (token != null) {
       headers['Authorization'] = 'Bearer $token';

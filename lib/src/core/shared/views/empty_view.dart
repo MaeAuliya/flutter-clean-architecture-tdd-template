@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../extensions/context_extension.dart';
-import '../../res/colours.dart';
 import '../../res/media_res.dart';
 import '../../res/typography.dart';
 
@@ -21,86 +21,47 @@ class EmptyView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (isUseRefresh) {
-      return Center(
-        child: ListView.builder(
-          shrinkWrap: true,
-          itemCount: 1,
-          itemBuilder: (_, __) => Container(
-            margin: EdgeInsets.only(bottom: context.height * 0.15),
-            child: Column(
-              spacing: context.heightScale * 8,
-              children: [
-                Center(
-                  child: Image.asset(
-                    MediaRes.emptyStateVector,
-                    width: context.width * 0.5,
-                    height: context.width * 0.5,
-                  ),
-                ),
-                Column(
-                  spacing: context.heightScale * 4,
-                  children: [
-                    CoreText(
-                      title,
-                      weight: CoreTypography.bold,
-                      size: 16,
-                      color: Colours.primaryBlue,
-                      textAlign: TextAlign.center,
-                    ),
-                    SizedBox(
-                      width: descriptionWidth ?? context.width * 0.575,
-                      child: CoreText(
-                        description,
-                        color: Colours.gray400,
-                        textAlign: TextAlign.center,
-                        maxLines: 3,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
+    final body = Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      spacing: context.heightScale * 8,
+      children: [
+        SvgPicture.asset(
+          MediaRes.emptyStateVector,
+          width: context.width * 0.5,
+          height: context.width * 0.5,
+        ),
+        CoreText(
+          title,
+          weight: CoreTypography.bold,
+          size: 16,
+          color: context.colorScheme.primary,
+          textAlign: TextAlign.center,
+        ),
+        SizedBox(
+          width: descriptionWidth ?? context.width * 0.575,
+          child: CoreText(
+            description,
+            color: context.colorScheme.onSurfaceVariant,
+            textAlign: TextAlign.center,
+            maxLines: 3,
           ),
         ),
+      ],
+    );
+
+    if (!isUseRefresh) {
+      return Container(
+        margin: EdgeInsets.only(bottom: context.height * 0.15),
+        child: body,
       );
     }
-    return Container(
-      margin: EdgeInsets.only(bottom: context.height * 0.15),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        spacing: context.heightScale * 8,
-        children: [
-          Center(
-            child: Image.asset(
-              MediaRes.emptyStateVector,
-              width: context.width * 0.5,
-              height: context.width * 0.5,
-            ),
-          ),
-          Column(
-            spacing: context.heightScale * 4,
-            children: [
-              CoreText(
-                title,
-                weight: CoreTypography.bold,
-                size: 16,
-                color: Colours.primaryBlue,
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(
-                width: descriptionWidth ?? context.width * 0.575,
-                child: CoreText(
-                  description,
-                  color: Colours.gray400,
-                  textAlign: TextAlign.center,
-                  maxLines: 3,
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
+
+    return ListView(
+      shrinkWrap: true,
+      children: [
+        SizedBox(height: context.height * 0.15),
+        body,
+      ],
     );
   }
 }

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
-import '../../res/colours.dart';
-
 class CoreRectangleShimmer extends StatelessWidget {
   final double width;
   final double height;
@@ -17,14 +15,16 @@ class CoreRectangleShimmer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    // Intrinsic loading effect derives contrast from active theme.
     return Shimmer.fromColors(
-      baseColor: Colours.gray300,
-      highlightColor: Colors.grey.shade100,
+      baseColor: scheme.surfaceContainerHighest,
+      highlightColor: scheme.surfaceContainerLowest,
       child: Container(
         width: width,
         height: height,
         decoration: BoxDecoration(
-          color: Colours.gray400,
+          color: scheme.surfaceContainerHigh,
           borderRadius: BorderRadius.circular(borderRadius),
         ),
       ),

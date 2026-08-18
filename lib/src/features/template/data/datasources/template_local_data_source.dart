@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 import '../../../../core/errors/exception.dart';
@@ -20,18 +19,15 @@ class TemplateLocalDataSourceImpl implements TemplateLocalDataSource {
   @override
   Future<TemplateVersionModel> getCurrentTemplateVersion() async {
     try {
-      final result = TemplateVersionModel(
+      return TemplateVersionModel(
         appName: _packageInfo.appName,
         version: _packageInfo.version,
         buildNumber: _packageInfo.buildNumber,
       );
-
-      return result;
-    } on LocalException {
-      rethrow;
-    } catch (e, s) {
-      debugPrintStack(stackTrace: s);
-      throw LocalException(message: e.toString());
+    } catch (_) {
+      throw const LocalException(
+        diagnosticMessage: 'Package metadata could not be read',
+      );
     }
   }
 }

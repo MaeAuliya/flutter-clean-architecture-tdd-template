@@ -30,6 +30,7 @@ class TemplateInjector implements Injector {
         () => TemplateRepositoryImpl(
           localDataSource: sl(),
           remoteDataSource: sl(),
+          logger: sl(),
         ),
       )
       // Data Sources

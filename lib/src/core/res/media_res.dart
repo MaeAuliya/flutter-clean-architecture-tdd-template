@@ -7,9 +7,8 @@
 /// multiple places, you can reference them from here:
 ///
 /// ```dart
-/// Image.asset(MediaRes.exampleImage);
-/// SvgPicture.asset(MediaRes.exampleVector);
-/// Lottie.asset(MediaRes.exampleAnimation);
+/// SvgPicture.asset(MediaRes.githubIcon);
+/// SvgPicture.asset(MediaRes.errorStateVector);
 /// ```
 ///
 /// ### Benefits:
@@ -21,13 +20,11 @@
 /// ```text
 /// assets/
 /// ├── icons/
-/// │    └── example.svg
-/// ├── images/
-/// │    └── example.png
-/// ├── vectors/
-/// │    └── example.svg
-/// └── animations/
-///      └── example.json
+/// │    └── github_icon.svg
+/// └── vectors/
+///      ├── empty_state_vector.svg
+///      ├── error_state_vector.svg
+///      └── page_not_found_vector.svg
 /// ```
 ///
 /// Make sure all assets are declared in your `pubspec.yaml`:
@@ -35,9 +32,7 @@
 /// flutter:
 ///   assets:
 ///     - assets/icons/
-///     - assets/images/
 ///     - assets/vectors/
-///     - assets/animations/
 /// ```
 ///
 /// To add a new asset, simply create a new constant in this class pointing
@@ -50,39 +45,17 @@ class MediaRes {
   // Base Paths
   // =====================
   static const _baseIcons = 'assets/icons';
-  static const _baseImages = 'assets/images';
   static const _baseVectors = 'assets/vectors';
-  static const _baseAnimations = 'assets/animations';
 
   // =====================
   // Icons
   // =====================
-  /// Example SVG icon.
-  /// Replace `.svg` with the actual file name in your `assets/icons` folder.
   static const githubIcon = '$_baseIcons/github_icon.svg';
-  static const exampleIcon = '$_baseIcons/.svg';
-
-  // =====================
-  // Images
-  // =====================
-  /// Example PNG image.
-  /// Replace `.png` with the actual file name in your `assets/images` folder.
-  static const exampleImage = '$_baseImages/.png';
 
   // =====================
   // Vectors
   // =====================
-  /// Example SVG vector.
-  /// Replace `.svg` with the actual file name in your `assets/vectors` folder.
   static const emptyStateVector = '$_baseVectors/empty_state_vector.svg';
   static const errorStateVector = '$_baseVectors/error_state_vector.svg';
   static const pageNotFoundVector = '$_baseVectors/page_not_found_vector.svg';
-  static const exampleVector = '$_baseVectors/.svg';
-
-  // =====================
-  // Animations
-  // =====================
-  /// Example Lottie animation.
-  /// Replace `.json` with the actual file name in your `assets/animations` folder.
-  static const exampleAnimation = '$_baseAnimations/.json';
 }

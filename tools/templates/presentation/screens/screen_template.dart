@@ -36,8 +36,9 @@ class _${n.pascal}ScreenState extends State<${n.pascal}Screen> {
               CoreUtils.showSnackBar(
                 context: context,
                 message: state.errorMessage,
+                isError: true,
               );
-        
+
             case _:
           }
         },

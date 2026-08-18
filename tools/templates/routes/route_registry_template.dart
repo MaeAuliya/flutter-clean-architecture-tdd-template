@@ -6,8 +6,10 @@ class RouteRegistryTemplate extends CoreTemplateGen {
   String featureTpl(NameCase n) =>
       '''
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../features/${n.snake}/presentation/bloc/${n.snake}_bloc.dart';
+import '../../../../features/${n.snake}/presentation/providers/${n.snake}_provider.dart';
 import '../../../../features/${n.snake}/presentation/screens/${n.snake}_screen.dart';
 import '../../injection/injection_container.dart';
 import '../app_route.dart';
@@ -17,16 +19,19 @@ class ${n.pascal}RouteRegistry implements FeatureRouteRegistry {
 
   @override
   List<AppRoute> get routes => [
-        AppRoute(
-          name: ${n.pascal}Screen.routeName,
-          builder: (context, settings) => BlocProvider(
-            create: (_) => sl<${n.pascal}Bloc>(),
-            child: const ${n.pascal}Screen(),
-          ),
-        ),
+    AppRoute(
+      name: ${n.pascal}Screen.routeName,
+      builder: (context, settings) => MultiProvider(
+        providers: [
+          BlocProvider(create: (_) => sl<${n.pascal}Bloc>()),
+          ChangeNotifierProvider(create: (_) => ${n.pascal}Provider()),
+        ],
+        child: const ${n.pascal}Screen(),
+      ),
+    ),
 
-        // GENERATED ${n.upperSnake} FEATURE ROUTES - DO NOT REMOVE
-      ];
+    // GENERATED ${n.upperSnake} FEATURE ROUTES - DO NOT REMOVE
+  ];
 }
 ''';
 

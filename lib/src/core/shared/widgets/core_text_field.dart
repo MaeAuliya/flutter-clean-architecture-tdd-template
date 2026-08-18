@@ -1,9 +1,7 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../../res/colours.dart';
+import '../../extensions/context_extension.dart';
 import '../../res/fonts.dart';
 import '../../res/texts.dart';
 import '../../res/typography.dart';
@@ -79,8 +77,8 @@ class CoreTextField extends StatelessWidget {
   final EdgeInsetsGeometry? contentPadding;
   final FontWeight fontWeight;
   final FocusNode? focusNode;
-  final Function(String)? onSubmitted;
-  final Function(PointerDownEvent)? onTapOutside;
+  final ValueChanged<String>? onSubmitted;
+  final TapRegionCallback? onTapOutside;
   final List<TextInputFormatter>? inputFormatters;
   final bool isBorderColorReadOnlyChange;
 
@@ -93,20 +91,13 @@ class CoreTextField extends StatelessWidget {
           child: Stack(
             children: [
               TextFormField(
-                cursorColor: Colours.primaryBlue,
+                cursorColor: context.colorScheme.primary,
                 minLines: minHeight,
                 focusNode: focusNode,
                 maxLines: height ?? 1,
                 onFieldSubmitted: onSubmitted,
                 onTapOutside:
-                    onTapOutside ??
-                    (event) {
-                      if (Platform.isIOS) {
-                        FocusScope.of(context).unfocus();
-                      } else {
-                        return;
-                      }
-                    },
+                    onTapOutside ?? (_) => FocusScope.of(context).unfocus(),
                 enableInteractiveSelection: onTap == null,
                 controller: controller,
                 showCursor: showCursor,
@@ -136,8 +127,8 @@ class CoreTextField extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 14,
                   color: (readOnly && isColorReadOnlyChanged == false)
-                      ? Colours.gray300
-                      : Colours.black,
+                      ? context.colorScheme.outlineVariant
+                      : context.colorScheme.onSurface,
                   fontFamily: Fonts.roboto,
                   fontWeight: fontWeight,
                   height: 24 / 14,
@@ -150,15 +141,15 @@ class CoreTextField extends StatelessWidget {
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(4),
                     borderSide: BorderSide(
-                      color: borderColor ?? Colours.gray300,
+                      color: borderColor ?? context.colorScheme.outlineVariant,
                     ),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(4),
                     borderSide: BorderSide(
                       color: (readOnly && isBorderColorReadOnlyChange)
-                          ? Colours.gray300
-                          : activeBorder ?? Colours.primaryBlue,
+                          ? context.colorScheme.outlineVariant
+                          : activeBorder ?? context.colorScheme.primary,
                     ),
                   ),
                   contentPadding:
@@ -171,9 +162,9 @@ class CoreTextField extends StatelessWidget {
                     minWidth: 0,
                     minHeight: 0,
                   ),
-                  prefixStyle: const TextStyle(
+                  prefixStyle: TextStyle(
                     fontSize: 14,
-                    color: Colours.primaryBlue,
+                    color: context.colorScheme.primary,
                     fontFamily: Fonts.roboto,
                     fontWeight: CoreTypography.bold,
                     height: 24 / 14,
@@ -181,7 +172,7 @@ class CoreTextField extends StatelessWidget {
                   errorText: errorMessage,
                   errorBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(4),
-                    borderSide: const BorderSide(color: Colours.errorColor),
+                    borderSide: BorderSide(color: context.colorScheme.error),
                   ),
                   errorMaxLines: 2,
                   prefixIcon:
@@ -195,9 +186,9 @@ class CoreTextField extends StatelessWidget {
                                 ),
                                 child: Text(
                                   prefixText!,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 14,
-                                    color: Colours.gray400,
+                                    color: context.colorScheme.onSurfaceVariant,
                                     fontFamily: Fonts.roboto,
                                     fontWeight: CoreTypography.medium,
                                     height: 24 / 14,
@@ -209,9 +200,9 @@ class CoreTextField extends StatelessWidget {
                   hintText: showHint == null ? hintText : null,
                   hintStyle: showHint == null
                       ? hintStyle ??
-                            const TextStyle(
+                            TextStyle(
                               fontSize: 12,
-                              color: Colours.gray300,
+                              color: context.colorScheme.outlineVariant,
                               fontFamily: Fonts.roboto,
                               fontWeight: CoreTypography.medium,
                               height: 24 / 12,

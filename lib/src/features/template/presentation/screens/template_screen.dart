@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../core/extensions/context_extension.dart';
 import '../../../../core/utils/core_utils.dart';
 import '../bloc/template_bloc.dart';
+import '../extensions/template_context_extension.dart';
 import '../views/template_view.dart';
 
 class TemplateScreen extends StatefulWidget {
@@ -19,9 +19,8 @@ class TemplateScreen extends StatefulWidget {
 class _TemplateScreenState extends State<TemplateScreen> {
   @override
   void initState() {
-    context.templateProvider.init();
-    context.templateBloc.add(const GetCurrentTemplateVersionEvent());
     super.initState();
+    context.templateBloc.add(const GetCurrentTemplateVersionEvent());
   }
 
   @override

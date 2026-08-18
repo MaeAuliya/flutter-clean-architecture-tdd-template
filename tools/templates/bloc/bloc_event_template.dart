@@ -14,9 +14,17 @@ abstract class ${n.pascal}Event extends Equatable {
   List<Object?> get props => [];
 }
 
-
 final class Get${n.pascal}Event extends ${n.pascal}Event {
   const Get${n.pascal}Event();
+}
+
+final class Update${n.pascal}Event extends ${n.pascal}Event {
+  final ${n.pascal}Entity ${n.camel};
+
+  const Update${n.pascal}Event(this.${n.camel});
+
+  @override
+  List<Object?> get props => [${n.camel}];
 }
 ''';
 

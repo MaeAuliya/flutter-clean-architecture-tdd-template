@@ -44,11 +44,11 @@ Delete a module:
 dart run tools/file_gen_main.dart delete module <module_name>
 ```
 
-The feature generator creates feature files, provider, screen, view, injector, route registry, provider registry entry, route registry entry, and dependency injection registry entry. The module generator creates reusable module structure under `lib/src/core/modules/` and does not create presentation files.
+The feature generator creates feature files, a route-scoped provider, screen, view, injector, route registry, registry entries, and mirrored unit/Bloc test skeletons with `.mock.dart` doubles. The module generator creates reusable module structure plus mirrored tests under `lib/src/core/modules/` and does not create presentation files.
 
 ## Implementation Rules
 
-Feature providers must be registered through `lib/src/core/services/providers/app_providers.dart`, not directly inside `main.dart`. Routes must be registered through feature route registries, not switch-cases inside `router.dart`. Dependency injection must use modular injector files under `lib/src/core/services/injection/injectors/`; core shared dependencies stay inside `CoreInjector`.
+Feature providers must be created at their route/flow boundary; `lib/src/core/services/providers/app_providers.dart` is only for intentionally app-lifetime state. Routes must be registered through feature route registries, not switch-cases inside `router.dart`. Dependency injection must use modular injector files under `lib/src/core/services/injection/injectors/`; core shared dependencies stay inside `CoreInjector`.
 
 Use lowercase snake case generator names, for example `user_profile` or `local_storage`. Follow `flutter_lints` and `analysis_options.yaml`: prefer relative imports, `const` constructors, preserved trailing commas, and `snake_case.dart` file names.
 
@@ -62,10 +62,10 @@ Suggested command:
 dart run tools/file_gen_main.dart delete feature template
 ```
 
-Do not delete `template` before replacing app dependencies that still point to it, such as initial route, splash screen, route registry, provider registry, dependency injection, and sample imports. Codex may suggest this cleanup during product conversion but must not delete `template` automatically unless explicitly requested.
+Do not delete `template` before replacing app dependencies that still point to it, such as initial route, splash screen, route-scoped provider, route registry, dependency injection, and sample imports. Codex may suggest this cleanup during product conversion but must not delete `template` automatically unless explicitly requested.
 
 ## Commands and Reviews
 
-Use `flutter pub get`, `flutter run`, `dart format .`, `flutter analyze`, and `flutter test` for normal development. CI runs dependency fetch, analysis, and tests for pushes and PRs to `master` and `develop`.
+Copy `env.example.json` to ignored `env.json`, then run with `flutter run --dart-define-from-file=env.json`. Use `flutter pub get`, `dart format .`, `flutter analyze`, and `flutter test` for normal development. CI runs generator round-trip validation, analysis, and tests for pushes and PRs to `master` and `develop`.
 
-Tests use `flutter_test`, `mocktail`, and `bloc_test`. Name tests `_test.dart`, mirror source structure, and prioritize use cases, repositories, data sources, models, and Bloc/Cubit behavior. PRs need a summary, linked issues when relevant, UI screenshots, and analysis/test results.
+Tests use `flutter_test`, `mocktail`, and `bloc_test`. Name tests `_test.dart`, mirror source structure, and prioritize use cases, repositories, data sources, models, and Bloc behavior. PRs need a summary, linked issues when relevant, UI screenshots, and analysis/test results.

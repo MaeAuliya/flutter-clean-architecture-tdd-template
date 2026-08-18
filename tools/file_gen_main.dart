@@ -30,9 +30,11 @@ Future<void> _handleGenerateCommand(List<String> args) async {
   switch (command) {
     case 'feature':
       await FileGenHelpers.generateFeature(name);
+      return;
 
     case 'module':
       await FileGenHelpers.generateModule(name);
+      return;
 
     default:
       stderr.writeln('❌ Unknown command "$command".');
@@ -59,13 +61,15 @@ Future<void> _handleDeleteCommand(List<String> args) async {
   switch (target) {
     case 'feature':
       await FileDeleteHelpers.deleteFeature(name);
+      return;
 
     case 'module':
       await FileDeleteHelpers.deleteModule(name);
+      return;
 
     default:
       stderr.writeln(
-        '❌ Unsupported delete target "$target". Supported target: feature.',
+        '❌ Unsupported delete target "$target". Supported targets: feature, module.',
       );
       _printUsage();
       exit(64);
@@ -86,4 +90,5 @@ void _printUsage() {
   stderr.writeln('  dart run tools/file_gen_main.dart feature <name>');
   stderr.writeln('  dart run tools/file_gen_main.dart module <name>');
   stderr.writeln('  dart run tools/file_gen_main.dart delete feature <name>');
+  stderr.writeln('  dart run tools/file_gen_main.dart delete module <name>');
 }

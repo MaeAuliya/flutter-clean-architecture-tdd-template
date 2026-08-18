@@ -1,6 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../features/template/presentation/bloc/template_bloc.dart';
+import '../../../../features/template/presentation/providers/template_provider.dart';
 import '../../../../features/template/presentation/screens/splash_screen.dart';
 import '../../../../features/template/presentation/screens/template_screen.dart';
 import '../../injection/injection_container.dart';
@@ -20,8 +22,11 @@ class TemplateRouteRegistry implements FeatureRouteRegistry {
     ),
     AppRoute(
       name: TemplateScreen.routeName,
-      builder: (context, settings) => BlocProvider(
-        create: (_) => sl<TemplateBloc>(),
+      builder: (context, settings) => MultiProvider(
+        providers: [
+          BlocProvider(create: (_) => sl<TemplateBloc>()),
+          ChangeNotifierProvider(create: (_) => TemplateProvider()),
+        ],
         child: const TemplateScreen(),
       ),
     ),

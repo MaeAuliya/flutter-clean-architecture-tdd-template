@@ -1,7 +1,5 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
-
-import '../../res/colours.dart';
 
 class CoreAvatarShimmer extends StatelessWidget {
   final double size;
@@ -10,12 +8,14 @@ class CoreAvatarShimmer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    // Intrinsic loading effect derives contrast from active theme.
     return Shimmer.fromColors(
-      baseColor: Colours.gray300,
-      highlightColor: Colours.gray100,
+      baseColor: scheme.surfaceContainerHighest,
+      highlightColor: scheme.surfaceContainerLowest,
       child: Icon(
-        CupertinoIcons.profile_circled,
-        color: Colours.gray500,
+        Icons.account_circle_outlined,
+        color: scheme.primary,
         size: size,
       ),
     );

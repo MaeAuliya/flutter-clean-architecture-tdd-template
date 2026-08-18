@@ -8,9 +8,6 @@ import 'package:mocktail/mocktail.dart';
 
 import '../repositories/template_repository.mock.dart';
 
-class MockGetCurrentTemplateVersion extends Mock
-    implements GetCurrentTemplateVersion {}
-
 void main() {
   late TemplateRepository repository;
   late GetCurrentTemplateVersion useCase;

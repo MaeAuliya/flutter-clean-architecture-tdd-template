@@ -28,6 +28,35 @@ jobs:
       - name: Fetch packages
         run: flutter pub get
 
+      - name: Generator round-trip
+        shell: bash
+        run: |
+          git status --porcelain --untracked-files=all > /tmp/generator-baseline
+          if [ -s /tmp/generator-baseline ]; then
+            cat /tmp/generator-baseline
+            exit 1
+          fi
+          cleanup() {
+            if [ -d lib/src/features/ci_probe ]; then
+              printf 'DELETE ci_probe\n' | dart run tools/file_gen_main.dart delete feature ci_probe
+            fi
+            if [ -d lib/src/core/modules/ci_probe ]; then
+              printf 'DELETE ci_probe\n' | dart run tools/file_gen_main.dart delete module ci_probe
+            fi
+          }
+          trap cleanup EXIT
+          dart run tools/file_gen_main.dart feature ci_probe
+          dart run tools/file_gen_main.dart module ci_probe
+          flutter analyze
+          flutter test test/features/ci_probe test/core/modules/ci_probe
+          cleanup
+          git status --porcelain --untracked-files=all > /tmp/generator-status
+          if [ -s /tmp/generator-status ]; then
+            cat /tmp/generator-status
+            exit 1
+          fi
+          trap - EXIT
+
 #      If you want to reformat your code too
 #      - name: Format check
 #        run: dart format --output=none --set-exit-if-changed .

@@ -8,19 +8,19 @@ A public Flutter starter template for building scalable, testable mobile apps wi
 
 ## Overview
 
-This repository provides a ready-to-extend Flutter app foundation with clear boundaries between data, domain, and presentation layers. It includes local file generator tools, modular dependency injection, provider and route registries, and documentation that helps both humans and AI coding agents follow the same implementation rules.
+This repository provides a ready-to-extend Flutter app foundation with clear boundaries between data, domain, and presentation layers. It includes local file generator tools, modular dependency injection, route-scoped feature providers, route registries, and documentation that helps both humans and AI coding agents follow the same implementation rules.
 
 ## Main Features
 
 - Feature-Based Clean Architecture
 - TDD-friendly folder structure
-- Bloc/Cubit-ready presentation layer
-- Provider registry through `app_providers.dart`
+- Bloc-based presentation layer
+- Route-scoped feature providers; `app_providers.dart` only for app-lifetime state
 - Route registry per feature
 - Screen + View presentation pattern
 - Modular GetIt dependency injection
 - Local file generator tools for features and modules
-- Codex-ready guidance through `AGENTS.md` and `docs/
+- Codex-ready guidance through `AGENTS.md` and `docs/`
 
 ## Tech Stack
 ### Framework & Language
@@ -38,6 +38,10 @@ This repository provides a ready-to-extend Flutter app foundation with clear bou
 ### Data & API
 - [Dio](https://pub.dev/packages/dio) – HTTP client
 - [Shared Preferences](https://pub.dev/packages/shared_preferences) – key-value storage
+
+### Configuration
+
+`BASE_URL` is required at startup. `EXAMPLE` is an optional sample endpoint value. Keep real values in ignored `env.json`; commit placeholders only in `env.example.json`.
 
 ### Utilities
 - [flutter_svg](https://pub.dev/packages/flutter_svg) – SVG rendering
@@ -77,19 +81,6 @@ project_root/
 │       │   ├── usecases/           # Contract Abstraction for usecase pattern
 │       │   ├── utils/              # Utility helpers
 │       │   └── modules/            # Reusable domain/data modules
-│       │       └── sample_module/  
-│       │           ├── domain/
-│       │           │   ├── entities/
-│       │           │   │   └── sample_entity.dart
-│       │           │   ├── repositories/
-│       │           │   │   └── sample_repository.dart
-│       │           │   └── usecases/
-│       │           │       └── sample_usecase.dart
-│       │           └── data/
-│       │               ├── datasources/
-│       │               │   └── sample_remote_data_source.dart
-│       │               └── repositories/
-│       │                   └── sample_repository_impl.dart
 │       │
 │       └── features/
 │           └── feature_a/
@@ -119,8 +110,6 @@ project_root/
 │                   │   └── feature_a_provider.dart
 │                   ├── screens/
 │                   │   └── feature_a_screen.dart
-│                   ├── shimmer_views/
-│                   │   └── feature_a_list_shimmer.dart
 │                   ├── views/
 │                   │   └── feature_a_list_view.dart
 │                   └── widgets/
@@ -128,12 +117,9 @@ project_root/
 │
 ├── test/
 │   ├── core/
-│   │   └── modules/
-│   │       └── sample_module/
-│   │           ├── domain/
-│   │           │   └── usecases/sample_usecase_test.dart
-│   │           └── data/
-│   │               └── repositories/sample_repository_impl_test.dart
+│   │   ├── errors/
+│   │   ├── services/
+│   │   └── shared/
 │   │
 │   └── features/
 │       └── feature_a/
@@ -194,11 +180,11 @@ A generated feature includes:
 - view
 - injector
 - route registry
-- provider registry entry
 - route registry entry
 - dependency injection registry entry
+- mirrored unit/Bloc test skeletons and `.mock.dart` doubles
 
-Feature providers must be registered through `lib/src/core/services/providers/app_providers.dart`, not directly in `main.dart`. Routes must be registered through feature route registries, not switch-cases inside `router.dart`.
+Feature providers are created inside their feature route registry so state ends with the route. `lib/src/core/services/providers/app_providers.dart` is reserved for app-lifetime state such as session, theme, locale, or connectivity. Routes must be registered through feature route registries, not switch-cases inside `router.dart`.
 
 ## Creating a Module
 
@@ -220,7 +206,7 @@ Modules are reusable core structures and do not include presentation layer files
 dart run tools/file_gen_main.dart delete feature <feature_name>
 ```
 
-The delete command removes generated feature files and cleans related provider, route, and dependency injection registry entries. Inspect the cleanup afterward.
+The delete command removes generated feature/tests and cleans related route and dependency injection registry entries. Inspect the cleanup afterward.
 
 ## Deleting a Module
 
@@ -247,29 +233,33 @@ Do not delete the `template` feature before replacing app dependencies that stil
 - initial route
 - splash screen
 - route registry
-- provider registry
+- route-scoped provider
 - dependency injection
 - sample imports
 
 Codex may suggest this cleanup when converting the repository into a real project, but must not delete `template` automatically unless explicitly requested.
 
-## Verification Commands
+## Run and Verification Commands
+
+Copy placeholder configuration before running locally, then replace only values needed by your app. `env.json` stays ignored.
 
 ```bash
+cp env.example.json env.json
 flutter pub get
+flutter run --dart-define-from-file=env.json
 dart format .
 flutter analyze
 flutter test
 flutter test --concurrency=4
 ```
 
-CI runs dependency fetch, static analysis, and tests for pushes and pull requests to `master` and `develop`.
+CI runs dependency fetch, feature/module generator round-trip validation, static analysis, and tests for pushes and pull requests to `master` and `develop`.
 
 ## Upcoming Features
 
 Planned updates for this template:
 
-- [x] **CI/CD Workflow** using GitHub Actions (Flutter analyze + test)
+- [x] **CI/CD Workflow** using GitHub Actions (generator round-trip + Flutter analyze + test)
 - [x] **AI Integration** using Codex
 - [x] Add **File generator** tools for creating features or modules
 - [ ] Example implementation of a **core module** (e.g., error handling, app theme)

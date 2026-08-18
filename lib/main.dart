@@ -16,7 +16,7 @@ void main() async {
   // Init Mobile Orientations
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
-  // // Init Dependencies
+  // Init Dependencies
   await InjectionContainer.init(sl);
 
   // Run App
@@ -39,19 +39,6 @@ class MyApp extends StatelessWidget {
         onGenerateRoute: generateRoute,
         initialRoute: SplashScreen.routeName,
         navigatorKey: navigatorKey,
-        navigatorObservers: [
-          // sl<MyRouteObserver>(),
-        ],
-        builder: (context, child) {
-          return MediaQuery(
-            data: MediaQuery.of(context).copyWith(
-              textScaler: MediaQuery.of(
-                context,
-              ).textScaler.clamp(minScaleFactor: 1, maxScaleFactor: 1),
-            ),
-            child: child!,
-          );
-        },
       ),
     );
   }

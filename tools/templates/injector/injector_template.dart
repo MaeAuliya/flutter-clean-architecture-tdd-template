@@ -14,7 +14,6 @@ import '../../../../features/${n.snake}/domain/repositories/${n.snake}_repositor
 import '../../../../features/${n.snake}/domain/usecases/get_${n.snake}.dart';
 import '../../../../features/${n.snake}/domain/usecases/update_${n.snake}.dart';
 import '../../../../features/${n.snake}/presentation/bloc/${n.snake}_bloc.dart';
-
 import '../injection_container.dart';
 
 class ${n.pascal}Injector implements Injector {
@@ -23,30 +22,33 @@ class ${n.pascal}Injector implements Injector {
   @override
   Future<void> inject(GetIt sl) async {
     sl
-      // Bloc
       ..registerFactory(
-        () => ${n.pascal}Bloc(),
+        () => ${n.pascal}Bloc(
+          get${n.pascal}: sl(),
+          update${n.pascal}: sl(),
+        ),
       )
-      // Usecases
       ..registerLazySingleton(() => Get${n.pascal}(repository: sl()))
       ..registerLazySingleton(() => Update${n.pascal}(repository: sl()))
-      // Repository
       ..registerLazySingleton<${n.pascal}Repository>(
-        () => const ${n.pascal}RepositoryImpl(),
+        () => ${n.pascal}RepositoryImpl(
+          localDataSource: sl(),
+          remoteDataSource: sl(),
+          logger: sl(),
+        ),
       )
-      // Data Sources
       ..registerLazySingleton<${n.pascal}LocalDataSource>(
-        () => const ${n.pascal}LocalDataSourceImpl(),
+        ${n.pascal}LocalDataSourceImpl.new,
       )
       ..registerLazySingleton<${n.pascal}RemoteDataSource>(
-        () => const ${n.pascal}RemoteDataSourceImpl(),
+        ${n.pascal}RemoteDataSourceImpl.new,
       );
   }
-}     
+}
 ''';
 
   @override
-  String? moduleTpl(NameCase n) =>
+  String moduleTpl(NameCase n) =>
       '''
 import 'package:get_it/get_it.dart';
 
@@ -56,7 +58,6 @@ import '../../../modules/${n.snake}/data/repositories/${n.snake}_repository_impl
 import '../../../modules/${n.snake}/domain/repositories/${n.snake}_repository.dart';
 import '../../../modules/${n.snake}/domain/usecases/get_${n.snake}.dart';
 import '../../../modules/${n.snake}/domain/usecases/update_${n.snake}.dart';
-
 import '../injection_container.dart';
 
 class ${n.pascal}ModuleInjector implements Injector {
@@ -65,21 +66,22 @@ class ${n.pascal}ModuleInjector implements Injector {
   @override
   Future<void> inject(GetIt sl) async {
     sl
-      // Usecases
       ..registerLazySingleton(() => Get${n.pascal}(repository: sl()))
       ..registerLazySingleton(() => Update${n.pascal}(repository: sl()))
-      // Repository
       ..registerLazySingleton<${n.pascal}Repository>(
-        () => const ${n.pascal}RepositoryImpl(),
+        () => ${n.pascal}RepositoryImpl(
+          localDataSource: sl(),
+          remoteDataSource: sl(),
+          logger: sl(),
+        ),
       )
-      // Data Sources
       ..registerLazySingleton<${n.pascal}LocalDataSource>(
-        () => const ${n.pascal}LocalDataSourceImpl(),
+        ${n.pascal}LocalDataSourceImpl.new,
       )
       ..registerLazySingleton<${n.pascal}RemoteDataSource>(
-        () => const ${n.pascal}RemoteDataSourceImpl(),
+        ${n.pascal}RemoteDataSourceImpl.new,
       );
   }
-}     
+}
 ''';
 }

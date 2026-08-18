@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../extensions/context_extension.dart';
-import '../../res/colours.dart';
+import '../../res/fonts.dart';
 import '../../res/typography.dart';
 
 class CoreButton extends StatelessWidget {
@@ -44,15 +44,20 @@ class CoreButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final scheme = context.colorScheme;
+    final foreground = isDisable
+        ? scheme.onSurfaceVariant
+        : foregroundColor ?? scheme.onPrimary;
+
     return IgnorePointer(
       ignoring: isDisable,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           minimumSize: Size.fromHeight(minimumSize * context.heightScale),
           shape: RoundedRectangleBorder(
-            side: borderColor != null
-                ? BorderSide(color: borderColor!)
-                : BorderSide.none,
+            side: borderColor == null
+                ? BorderSide.none
+                : BorderSide(color: borderColor!),
             borderRadius: BorderRadius.circular(radius ?? 4),
           ),
           padding: EdgeInsets.symmetric(
@@ -60,36 +65,36 @@ class CoreButton extends StatelessWidget {
             vertical: verticalPadding ?? 8,
           ),
           backgroundColor: isDisable
-              ? Colours.gray300
-              : backgroundColor ?? Colours.darkBlue,
-          foregroundColor: foregroundColor ?? Colors.white,
-          shadowColor: Colors.black.withAlpha(5),
+              ? scheme.surfaceContainerHighest
+              : backgroundColor ?? scheme.primary,
+          foregroundColor: foreground,
+          shadowColor: scheme.shadow.withAlpha(5),
         ),
-        onPressed: () async {
-          onPressed();
-        },
+        onPressed: onPressed,
         child: icon == null
             ? CoreText(
                 text,
                 weight: fontWeight ?? CoreTypography.bold,
-                color: foregroundColor ?? Colours.white,
+                size: fontSize,
+                family: fontFamily ?? Fonts.roboto,
+                color: foreground,
               )
             : Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  (iconPositionFront) ? icon! : const SizedBox.shrink(),
-                  (iconPositionFront)
-                      ? SizedBox(width: context.widthScale * 10)
-                      : const SizedBox.shrink(),
+                  if (iconPositionFront) icon!,
+                  if (iconPositionFront)
+                    SizedBox(width: context.widthScale * 10),
                   CoreText(
                     text,
                     weight: fontWeight ?? CoreTypography.bold,
-                    color: foregroundColor ?? Colours.white,
+                    size: fontSize,
+                    family: fontFamily ?? Fonts.roboto,
+                    color: foreground,
                   ),
-                  (!iconPositionFront)
-                      ? SizedBox(width: context.widthScale * 10)
-                      : const SizedBox.shrink(),
-                  (!iconPositionFront) ? icon! : const SizedBox.shrink(),
+                  if (!iconPositionFront)
+                    SizedBox(width: context.widthScale * 10),
+                  if (!iconPositionFront) icon!,
                 ],
               ),
       ),

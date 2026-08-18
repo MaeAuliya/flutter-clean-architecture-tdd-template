@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../extensions/context_extension.dart';
-import '../res/colours.dart';
 import '../res/texts.dart';
 import '../res/typography.dart';
 import '../shared/views/loading_view_dialog.dart';
@@ -25,6 +24,10 @@ class CoreUtils {
     String title = Texts.stateSuccess,
     bool isError = false,
   }) {
+    final scheme = context.colorScheme;
+    final background = isError ? scheme.error : scheme.tertiary;
+    final foreground = isError ? scheme.onError : scheme.onTertiary;
+
     ScaffoldMessenger.of(context)
       ..removeCurrentSnackBar()
       ..showSnackBar(
@@ -36,13 +39,13 @@ class CoreUtils {
                 width: context.widthScale * 24,
                 height: context.widthScale * 24,
                 decoration: BoxDecoration(
-                  color: Colours.white,
+                  color: foreground,
                   borderRadius: BorderRadius.circular(6),
                 ),
                 alignment: Alignment.center,
                 child: Icon(
                   isError ? Icons.close_rounded : Icons.check_rounded,
-                  color: isError ? Colours.errorColor : Colours.successColor,
+                  color: background,
                   size: context.widthScale * 16,
                 ),
               ),
@@ -52,16 +55,16 @@ class CoreUtils {
                   children: [
                     CoreText(
                       isError ? Texts.error : title,
-                      color: Colours.white,
+                      color: foreground,
                       weight: FontWeight.bold,
                     ),
-                    CoreText(message, color: Colours.white, maxLines: 10),
+                    CoreText(message, color: foreground, maxLines: 10),
                   ],
                 ),
               ),
             ],
           ),
-          backgroundColor: isError ? Colours.errorColor : Colours.successColor,
+          backgroundColor: background,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),

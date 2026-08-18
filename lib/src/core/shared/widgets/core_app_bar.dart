@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../../res/colours.dart';
 import '../../res/typography.dart';
 
 class CoreAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -16,7 +15,7 @@ class CoreAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.onPressed,
     this.backgroundColor,
     this.foregroundColor,
-    this.statusBarIconColor = Brightness.dark,
+    this.statusBarIconColor,
     this.isOnlyNeedStatusBar = false,
     this.statusBarColor,
   });
@@ -30,32 +29,40 @@ class CoreAppBar extends StatelessWidget implements PreferredSizeWidget {
   final VoidCallback? onPressed;
   final Color? backgroundColor;
   final Color? foregroundColor;
-  final Brightness statusBarIconColor;
+  final Brightness? statusBarIconColor;
   final bool isOnlyNeedStatusBar;
   final Color? statusBarColor;
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final foreground = foregroundColor ?? theme.colorScheme.onSurface;
+    final overlayBrightness =
+        statusBarIconColor ??
+        (theme.brightness == Brightness.dark
+            ? Brightness.light
+            : Brightness.dark);
+
     return AppBar(
       systemOverlayStyle: SystemUiOverlayStyle(
         statusBarColor: statusBarColor ?? Colors.transparent,
-        statusBarIconBrightness: statusBarIconColor,
-        statusBarBrightness: (statusBarIconColor == Brightness.dark)
+        statusBarIconBrightness: overlayBrightness,
+        statusBarBrightness: overlayBrightness == Brightness.dark
             ? Brightness.light
             : Brightness.dark,
       ),
       actions: [
-        child != null
-            ? Padding(padding: const EdgeInsets.only(right: 20), child: child)
-            : const SizedBox.shrink(),
+        if (child != null)
+          Padding(padding: const EdgeInsets.only(right: 20), child: child!),
       ],
       toolbarHeight: 70,
       leadingWidth: 70,
       surfaceTintColor: Colors.transparent,
       centerTitle: centerTitle,
       backgroundColor:
-          backgroundColor ?? (title == "" ? Colors.transparent : Colours.white),
-      foregroundColor: foregroundColor ?? Colours.black,
+          backgroundColor ??
+          (title.isEmpty ? Colors.transparent : theme.colorScheme.surface),
+      foregroundColor: foreground,
       elevation: 0,
       leading: isBackButton == true
           ? IconButton(
@@ -65,21 +72,17 @@ class CoreAppBar extends StatelessWidget implements PreferredSizeWidget {
                   icon ??
                   Icon(
                     Icons.arrow_back_ios_rounded,
-                    color: foregroundColor ?? Colours.black,
+                    color: foreground,
                     size: 20,
                   ),
-              onPressed:
-                  onPressed ??
-                  () {
-                    Navigator.pop(context);
-                  },
+              onPressed: onPressed ?? () => Navigator.pop(context),
             )
-          : const SizedBox.shrink(),
+          : null,
       title: CoreText(
         title,
         weight: CoreTypography.bold,
         size: size ?? 20,
-        color: foregroundColor ?? Colours.black,
+        color: foreground,
       ),
     );
   }

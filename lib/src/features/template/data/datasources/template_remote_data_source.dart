@@ -1,8 +1,8 @@
-import 'package:flutter/cupertino.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher.dart' show LaunchMode;
 
 import '../../../../core/errors/exception.dart';
 import '../../../../core/services/url_launcher_gateway/url_launcher_gateway.dart';
+import '../../../../core/utils/constants.dart';
 
 abstract class TemplateRemoteDataSource {
   const TemplateRemoteDataSource();
@@ -19,34 +19,31 @@ class TemplateRemoteDataSourceImpl implements TemplateRemoteDataSource {
 
   @override
   Future<void> openGithubUrl() async {
+    final uri = Uri.parse(Constants.githubUrl);
+
     try {
-      final link = 'https://github.com/MaeAuliya';
-
-      final uriLink = Uri.parse(link);
-
-      if (await _urlLauncherGateway.canLaunch(uriLink)) {
-        final isLaunch = await _urlLauncherGateway.launch(
-          uriLink,
-          mode: LaunchMode.externalApplication,
+      if (!await _urlLauncherGateway.canLaunch(uri)) {
+        throw const ServerException.rejected(
+          diagnosticMessage: 'GitHub URL cannot be launched',
         );
+      }
 
-        if (!isLaunch) {
-          throw const ServerException(
-            message: 'Could`nt open Github',
-            statusCode: 599,
-          );
-        }
-      } else {
-        throw const ServerException(
-          message: 'Could`nt open Github',
-          statusCode: 599,
+      final launched = await _urlLauncherGateway.launch(
+        uri,
+        mode: LaunchMode.externalApplication,
+      );
+
+      if (!launched) {
+        throw const ServerException.rejected(
+          diagnosticMessage: 'GitHub URL launch returned false',
         );
       }
     } on ServerException {
       rethrow;
-    } catch (e, s) {
-      debugPrintStack(stackTrace: s);
-      throw ServerException(message: e.toString(), statusCode: 599);
+    } catch (_) {
+      throw const ServerException.rejected(
+        diagnosticMessage: 'GitHub URL gateway failed',
+      );
     }
   }
 }

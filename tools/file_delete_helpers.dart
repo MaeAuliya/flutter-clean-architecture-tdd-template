@@ -27,8 +27,11 @@ class FileDeleteHelpers {
       'lib/src/core/services/router/registries/${name.snake}_route_registry.dart',
     );
 
+    await _deleteDirectoryIfExists(
+      'test/features/${name.snake}',
+    );
+
     await _removeFeatureInjectorRegistration(name);
-    await _removeProviderRegistration(name);
     await _removeRouteRegistryRegistration(name);
 
     stdout.writeln('');
@@ -52,6 +55,10 @@ class FileDeleteHelpers {
 
     await _deleteFileIfExists(
       'lib/src/core/services/injection/injectors/${name.snake}_module_injector.dart',
+    );
+
+    await _deleteDirectoryIfExists(
+      'test/core/modules/${name.snake}',
     );
 
     await _removeModuleInjectorRegistration(name);
@@ -95,7 +102,7 @@ class FileDeleteHelpers {
       '- lib/src/core/services/router/registries/${name.snake}_route_registry.dart',
     );
     stdout.writeln('- related entries in injection_container.dart');
-    stdout.writeln('- related entries in app_providers.dart');
+    stdout.writeln('- test/features/${name.snake}');
     stdout.writeln('- related entries in app_routes.dart');
     stdout.writeln('');
     stdout.write('Type DELETE ${name.snake} to confirm: ');
@@ -114,6 +121,7 @@ class FileDeleteHelpers {
       '- lib/src/core/services/injection/injectors/${name.snake}_module_injector.dart',
     );
     stdout.writeln('- related entries in injection_container.dart');
+    stdout.writeln('- test/core/modules/${name.snake}');
     stdout.writeln('');
     stdout.write('Type DELETE ${name.snake} to confirm: ');
 
@@ -186,43 +194,6 @@ class FileDeleteHelpers {
 
     text = _removeLine(text, importLine);
     text = _removeLine(text, injectorEntry);
-
-    await file.writeAsString(text);
-
-    stdout.writeln(' ~ cleaned $path');
-  }
-
-  static Future<void> _removeProviderRegistration(NameCase name) async {
-    const path = 'lib/src/core/services/providers/app_providers.dart';
-
-    final file = File(path);
-
-    if (!await file.exists()) {
-      stdout.writeln(' = $path (skipped, not found)');
-      return;
-    }
-
-    var text = await file.readAsString();
-
-    final importLine =
-        "import '../../../features/${name.snake}/presentation/providers/${name.snake}_provider.dart';";
-
-    final providerEntry =
-        'ChangeNotifierProvider(create: (_) => ${name.pascal}Provider()),';
-
-    text = _removeLine(text, importLine);
-
-    final providerEntryWithCommentRegex = RegExp(
-      r'^\s*///\s*' +
-          RegExp.escape('${name.title} Feature') +
-          r'\s*\r?\n\s*' +
-          RegExp.escape(providerEntry) +
-          r'\s*\r?\n?',
-      multiLine: true,
-    );
-
-    text = text.replaceAll(providerEntryWithCommentRegex, '');
-    text = _removeLine(text, providerEntry);
 
     await file.writeAsString(text);
 

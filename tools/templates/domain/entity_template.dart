@@ -3,7 +3,12 @@ import '../../name_case.dart';
 
 class EntityTemplate implements CoreTemplateGen {
   @override
-  String featureTpl(NameCase n) =>
+  String featureTpl(NameCase n) => _template(n);
+
+  @override
+  String moduleTpl(NameCase n) => _template(n);
+
+  String _template(NameCase n) =>
       '''
 import 'package:equatable/equatable.dart';
 
@@ -14,7 +19,4 @@ class ${n.pascal}Entity extends Equatable {
   List<Object?> get props => [];
 }
 ''';
-
-  @override
-  String? moduleTpl(NameCase n) => null;
 }

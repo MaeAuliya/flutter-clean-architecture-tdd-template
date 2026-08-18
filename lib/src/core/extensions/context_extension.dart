@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../features/template/presentation/bloc/template_bloc.dart';
-import '../../features/template/presentation/providers/template_provider.dart';
 import '../res/typography.dart';
 
 /// {@template context_extension}
-/// Handy helpers on [BuildContext] focusing on phones & tablets:
+/// Handy helpers on [BuildContext] focusing on phones and tablets:
 /// - Theming (theme, colorScheme, textTheme, AppTextStyles)
 /// - MediaQuery (size, paddings, insets, orientation, DPR)
 /// - Design-frame scaling (width/height scale, scalar)
@@ -146,19 +143,4 @@ extension ContextExtension on BuildContext {
 
   /// {@macro context_extension}
   bool get isDarkMode => theme.brightness == Brightness.dark;
-
-  // =========================
-  // EXAMPLES FOR STATE (UNCOMMENT IF USED)
-  // =========================
-
-  //// Blocs
-  TemplateBloc get templateBloc => read<TemplateBloc>();
-  // ExampleBloc get exampleBloc => read<ExampleBloc>();
-
-  //// Providers
-  TemplateProvider get templateProvider => read<TemplateProvider>();
-  // ExampleProvider get exampleProvider => read<ExampleProvider>();
-
-  //// Navigation controller
-  // NavigationController get bottomNavigator => read<NavigationController>();
 }

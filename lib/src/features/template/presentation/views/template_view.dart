@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/extensions/context_extension.dart';
-import '../../../../core/res/colours.dart';
 import '../../../../core/res/media_res.dart';
 import '../../../../core/res/texts.dart';
 import '../../../../core/res/typography.dart';
 import '../bloc/template_bloc.dart';
+import '../extensions/template_context_extension.dart';
 import '../providers/template_provider.dart';
 import '../widgets/social_media_icon.dart';
 
@@ -17,7 +17,7 @@ class TemplateView extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Padding(
-        padding: EdgeInsetsGeometry.all(
+        padding: EdgeInsets.all(
           context.widthScale * 32,
         ),
         child: Column(
@@ -27,9 +27,9 @@ class TemplateView extends StatelessWidget {
                 spacing: context.heightScale * 12,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const CoreText(
+                  CoreText(
                     Texts.templateTitle,
-                    color: Colours.primaryBlue,
+                    color: context.colorScheme.primary,
                     size: 16,
                     maxLines: 2,
                     weight: CoreTypography.semiBold,
@@ -41,9 +41,9 @@ class TemplateView extends StatelessWidget {
                     maxLines: 10,
                     textAlign: TextAlign.center,
                   ),
-                  const CoreText(
+                  CoreText(
                     Texts.templateDesc2,
-                    color: Colours.gray300,
+                    color: context.colorScheme.onSurfaceVariant,
                     size: 12,
                     maxLines: 4,
                     textAlign: TextAlign.center,
@@ -59,9 +59,10 @@ class TemplateView extends StatelessWidget {
                     if (provider.templateVersion == null) {
                       return const SizedBox.shrink();
                     }
+                    final version = provider.templateVersion!;
                     return CoreText(
-                      'Current Version : ${provider.templateVersion!.version} +${provider.templateVersion!.buildNumber}',
-                      color: Colours.primaryBlue,
+                      'Current Version : ${version.version} +${version.buildNumber}',
+                      color: context.colorScheme.primary,
                       size: 14,
                       weight: CoreTypography.semiBold,
                     );
@@ -73,7 +74,7 @@ class TemplateView extends StatelessWidget {
                 ),
                 SocialMediaIconButton(
                   image: MediaRes.githubIcon,
-                  backgroundColor: Colours.primaryBlue,
+                  backgroundColor: context.colorScheme.primary,
                   onTap: () {
                     context.templateBloc.add(const OpenGithubUrlEvent());
                   },

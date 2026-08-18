@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../../res/colours.dart';
+import '../../extensions/context_extension.dart';
 import '../../res/typography.dart';
 
 class CoreExpansionTile extends StatefulWidget {
@@ -25,26 +25,21 @@ class _CoreExpansionTileState extends State<CoreExpansionTile> {
 
   @override
   Widget build(BuildContext context) {
+    final shape = RoundedRectangleBorder(
+      borderRadius: const BorderRadius.all(Radius.circular(14)),
+      side: BorderSide(color: context.colorScheme.outline),
+    );
+
     return ExpansionTile(
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(14)),
-        side: BorderSide(color: Colours.gray400),
-      ),
-      collapsedShape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(14)),
-        side: BorderSide(color: Colours.gray400),
-      ),
-      onExpansionChanged: (value) {
-        setState(() {
-          _isExpanded = value;
-        });
-      },
-      leading: (widget.leadingIcon != null)
-          ? SvgPicture.asset(widget.leadingIcon!)
-          : null,
+      shape: shape,
+      collapsedShape: shape,
+      onExpansionChanged: (value) => setState(() => _isExpanded = value),
+      leading: widget.leadingIcon == null
+          ? null
+          : SvgPicture.asset(widget.leadingIcon!),
       trailing: Icon(
         _isExpanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
-        color: Colours.black,
+        color: context.colorScheme.onSurface,
       ),
       title: CoreText(widget.title, weight: CoreTypography.bold),
       children: widget.children,
