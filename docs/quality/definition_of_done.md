@@ -75,7 +75,9 @@ secret scan
 documentation link check (when docs change)
 ```
 
-Build and integration tests may run on protected branches or release workflows depending on cost. This template's CI gate runs dependency fetch, feature/module generator round-trip validation, static analysis, and tests on pushes and pull requests to `master` and `develop`. Format enforcement, secret scanning, and documentation-link checks are not currently automated.
+Build and integration tests may run on protected branches or release workflows depending on cost.
+
+This template's CI gate runs dependency fetch, feature/module generator round-trip validation, static analysis, and tests on pushes and pull requests to `master` and `develop`. Format enforcement, secret scanning, and documentation-link checks are not currently automated — run `dart format .` before pushing.
 
 ## Related documents
 

@@ -75,7 +75,7 @@ If persistence fails after memory changes, record diagnostics and decide whether
 
 ## Local data source threshold
 
-**Optional.** Create a local data source only when the feature reads or writes local data. Do not generate one for symmetry. The reference implementation shows why: most features have a local-source file, but several are tiny stubs that protect no boundary.
+**Optional.** Create a local data source only when the feature reads or writes local data. Do not generate one for symmetry — generated-by-ritual local sources end up as tiny stubs that protect no boundary while still costing a file, an interface, a registration, and a mock.
 
 A useful local source owns at least one of:
 

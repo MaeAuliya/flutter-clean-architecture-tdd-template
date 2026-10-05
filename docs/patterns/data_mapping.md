@@ -29,7 +29,7 @@ final class UserModel {
 }
 ```
 
-The reference implementation frequently uses `Model extends Entity`. That reduces duplication, but couples wire fields to domain inheritance and lets models cross boundaries unnoticed. Composition with explicit `toEntity()` is preferred for new projects because the boundary stays visible.
+A common shortcut is `Model extends Entity`. That reduces duplication, but couples wire fields to domain inheritance and lets models cross boundaries unnoticed. Composition with explicit `toEntity()` is preferred for new projects because the boundary stays visible. This template's generator currently emits the extends form.
 
 **Context-dependent.** Model-extends-entity can be acceptable for simple immutable read models whose wire and domain shapes are intentionally identical. Stop using it as soon as either side diverges.
 

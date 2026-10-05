@@ -8,14 +8,14 @@ Dependency injection separates object construction from behavior. It makes depen
 
 ## Recommended shape
 
-Use one `Injector` per feature or shared module, coordinated by `InjectionContainer`:
+Use a small injector per feature or shared module, coordinated by one root container. This template uses `GetIt` as the locator:
 
 ```dart
 abstract class Injector {
   Future<void> inject(GetIt sl);
 }
 
-final class ProfileInjector implements Injector {
+class ProfileInjector implements Injector {
   const ProfileInjector();
 
   @override
@@ -26,7 +26,7 @@ final class ProfileInjector implements Injector {
       )
       ..registerLazySingleton(() => LoadProfile(repository: sl()))
       ..registerLazySingleton<ProfileRepository>(
-        () => ProfileRepositoryImpl(remote: sl(), local: sl()),
+        () => ProfileRepositoryImpl(remoteDataSource: sl(), logger: sl()),
       )
       ..registerLazySingleton<ProfileRemoteDataSource>(
         () => ProfileRemoteDataSourceImpl(client: sl()),
@@ -35,14 +35,16 @@ final class ProfileInjector implements Injector {
 }
 ```
 
-Root installs infrastructure first, then features:
+The root injects infrastructure first, then features:
 
 ```dart
 await const CoreInjector().inject(sl);
-await Future.wait(_injectors.map((injector) => injector.inject(sl)));
+await Future.wait(_injectors.map((i) => i.inject(sl)));
 ```
 
 Core must finish first because feature injectors resolve its HTTP client, storage, and logging abstractions. Feature injectors may run concurrently only when they do not depend on one another.
+
+**Composition registry.** Each injector is listed in `InjectionContainer._injectors` at a `// GENERATED ... - DO NOT REMOVE` marker. The feature generator inserts the entry there and the deleter removes it — preserve those markers. Never register a feature's dependencies anywhere else.
 
 ---
 
@@ -82,7 +84,7 @@ This shape is readable at the call site, immutable, and friendly to tests.
 
 **Mandatory.** Business classes must not call the global service locator from inside methods. The locator belongs at composition boundaries — application setup and route factories. Hidden service location turns dependencies into runtime surprises and makes tests order-dependent.
 
-Composition-root files under `core/services/injection/` and `core/services/router/registries/` intentionally import feature entry points to assemble the graph. This is permitted wiring, not a reversal of business-layer dependency direction. General core utilities, services, and shared UI must not import feature code.
+Composition-root files under `core/services/injection/injectors/` and `core/services/router/registries/` are the exception to the layering matrix: assembling features is their job, so they may import feature blocs, providers, screens, and data sources. No other file under `core/` may. See [Dependency Rules](../architecture/dependency_rules.md).
 
 ---
 
@@ -90,17 +92,17 @@ Composition-root files under `core/services/injection/` and `core/services/route
 
 When adding a feature:
 
-1. Create one injector beside the other injectors.
-2. Register from outermost state holder inward: state → use cases → repository → sources.
+1. Create one injector beside the other injectors. The feature generator does this for you.
+2. Register from outermost state holder inward: bloc → use cases → repository → sources.
 3. Use interfaces for repository contracts and sources that need test fakes.
-4. Add the injector to the root list.
+4. Add the injector to the root list at the generated marker.
 5. Create route-scoped state holders as factories.
 6. Write a container smoke test that resolves the feature's state holder.
 
 When adding an infrastructure dependency:
 
 1. Create the project-owned abstraction if the SDK should not spread.
-2. Register the concrete implementation in the core injector.
+2. Register the concrete implementation in `CoreInjector`.
 3. Inject the abstraction into consumers.
 4. Do not call the SDK's singleton getter throughout features.
 
@@ -109,10 +111,10 @@ When adding an infrastructure dependency:
 ## Common mistakes
 
 - **Global mutable state.** Registering every form provider at application startup causes stale state to survive navigation and forces manual resets.
-- **Parallel injector race.** Feature A resolves something Feature B registers while both install concurrently. Shared dependencies belong in core, which installs first.
+- **Parallel injector race.** Feature A resolves something Feature B registers while both inject concurrently. Shared dependencies belong in core, which injects first.
 - **Duplicate registration.** Two injectors claim the same interface. Containers vary in behavior; some throw, others silently overwrite.
 - **Commented registrations.** Disabled registration code left in place implies a capability exists when it does not. Delete dead code and rely on history.
-- **Generator without registration.** A scaffold generator that creates a feature but does not wire its injector leaves a half-built feature. Either automate the full workflow or print explicit next steps.
+- **Registering a dependency nothing resolves.** A registration with no consumer is dead weight that reads as a live capability. If a client, gateway, or config object is registered but never injected, remove it or wire it.
 
 ---
 

@@ -19,17 +19,22 @@ lib/
     │   │       ├── domain/
     │   │       └── presentation/      # only when capability has shared UI
     │   ├── services/
-    │   │   ├── configuration/
+    │   │   ├── api/                   # build-time config and endpoint ownership
     │   │   ├── injection/
+    │   │   │   └── injectors/
     │   │   ├── logging/
     │   │   ├── network/
-    │   │   ├── routing/
-    │   │   └── storage/
+    │   │   ├── providers/             # application-scoped provider registry
+    │   │   └── router/
+    │   │       └── registries/
     │   ├── shared/
     │   │   ├── widgets/
     │   │   ├── views/
-    │   │   └── loading/
-    │   ├── theme/
+    │   │   ├── screens/
+    │   │   ├── shimmer_views/
+    │   │   └── shimmer_widgets/
+    │   ├── res/                       # theme, colors, typography, assets, strings
+    │   ├── enums/
     │   ├── usecases/
     │   └── utils/
     └── features/
@@ -43,12 +48,15 @@ lib/
             │   ├── repositories/
             │   └── usecases/
             └── presentation/
-                ├── state/
+                ├── bloc/
+                ├── providers/
                 ├── extensions/
                 ├── screens/
                 ├── views/
                 └── widgets/
 ```
+
+Capabilities this template does not yet implement — `services/configuration/` for remote config, `services/storage/` for typed storage gateways — belong under `services/` when you add them. The pattern documents that describe them say so.
 
 Use this as a direction, not a demand to create every folder. Empty directories and seven-line placeholder interfaces do not make architecture cleaner. Add a directory when it contains a real responsibility.
 
@@ -71,7 +79,7 @@ Feature-first keeps the files that change together together:
 ```text
 features/profile/
 features/search/
-features/checkout/
+features/settings/
 ```
 
 **Preferred.** Use feature-first organization once there are several independent capabilities or several contributors. A feature should be comprehensible without browsing unrelated features.
@@ -113,7 +121,7 @@ Core owns infrastructure and primitives with broad, stable reuse:
 
 ## Shared modules
 
-A shared module is larger than a utility and smaller than a product feature. It owns a reusable capability with meaningful domain and data boundaries — for example media acquisition, permissions, location, or payment-method storage.
+A shared module is larger than a utility and smaller than a product feature. It owns a reusable capability with meaningful domain and data boundaries — for example media acquisition, permissions, or location.
 
 ```text
 core/modules/media/
@@ -134,14 +142,16 @@ A module may have presentation UI when that UI is itself shared — a permission
 
 ## Presentation subfolders
 
-The mature pattern in the reference implementation is useful and consistent:
+The split this template uses:
 
 | Folder | Responsibility |
 |---|---|
 | `screens/` | Routed pages: route name, route arguments, state-holder provisioning, page shell |
 | `views/` | Large page sections or state-specific bodies; compose widgets, no route registration |
 | `widgets/` | Small feature-local reusable elements |
-| `state/` | Bloc/cubit/notifier/controller and its events/states |
+| `bloc/` | Bloc and its events/states — async and server state |
+| `providers/` | Route-scoped `ChangeNotifier` for ephemeral UI and data binding |
+| `extensions/` | Feature-specific typed `BuildContext` accessors |
 
 A practical rule: if it can be navigated to, it is a screen. If it occupies most of a screen but cannot be navigated to independently, it is a view. If it is a small compositional unit, it is a widget.
 

@@ -1,8 +1,8 @@
 # Testing Strategy
 
-**Status: Preferred standard; partially established.**
+**Status: Recommended standard.**
 
-This template has unit, Bloc, repository, data-source, mapper, API, shared-widget, and injector-composition tests under `test/`; CI validates generator round trips, then runs analysis and tests. Integration coverage remains product-dependent. Generated features/modules include mirrored test skeletons and `.mock.dart` doubles, but consuming projects must replace placeholder cases with behavior-specific coverage.
+This template ships tests for its one feature under `test/`, mirroring the source tree, and CI runs them on every push and pull request. It does not ship an `integration_test/` directory — add one when the project has a flow worth driving end to end. Remaining gaps are recorded in [Template Next Steps](../TODO/next_steps.md).
 
 ## Test pyramid
 

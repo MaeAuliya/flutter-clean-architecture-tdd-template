@@ -129,7 +129,7 @@ The central [Pattern Catalog](reference/pattern_catalog.md) lists status, applic
 - [Recommended Tech Stack](reference/recommended_tech_stack.md)
 - [Pattern Catalog](reference/pattern_catalog.md)
 - [Architecture Decision Records](decisions/README.md)
-- [Improvement Opportunities](TODO/next_steps.md)
+- [Template Next Steps](TODO/next_steps.md)
 
 ---
 

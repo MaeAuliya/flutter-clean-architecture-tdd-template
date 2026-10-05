@@ -9,21 +9,21 @@
 Create the HTTP client once with explicit policy:
 
 ```dart
-Dio createClient(API api) {
-  return Dio(
-    BaseOptions(
-      baseUrl: api.baseUrl,
-      connectTimeout: const Duration(seconds: 10),
-      sendTimeout: const Duration(seconds: 15),
-      receiveTimeout: const Duration(seconds: 30),
-    ),
-  );
-}
+final dio = Dio(
+  BaseOptions(
+    baseUrl: api.baseUrl,
+    connectTimeout: const Duration(seconds: 10),
+    sendTimeout: const Duration(seconds: 15),
+    receiveTimeout: const Duration(seconds: 30),
+  ),
+);
 ```
+
+This template builds the client once in `CoreInjector` and registers it as a lazy singleton. Add interceptors — auth, diagnostics — to the same `BaseOptions` construction when the project needs them; they belong on the client, not at call sites.
 
 **Mandatory.** Every timeout is explicit. Library defaults change and can be unsuitable for mobile networks.
 
-If authentication is later added, use a separate client for token refresh when the primary client carries an auth interceptor. Otherwise the refresh request can intercept itself and recurse.
+Use a separate client for token refresh when the primary client carries an auth interceptor. Otherwise the refresh request can intercept itself and recurse.
 
 ---
 
@@ -35,21 +35,20 @@ Group endpoint paths by capability rather than scattering literals through sourc
 class API {
   const API({
     this.baseUrl = const String.fromEnvironment('BASE_URL'),
-    this.exampleAPI = const ExampleAPI(),
+    this.itemAPI = const ItemAPI(),
   });
 
   final String baseUrl;
-  final ExampleAPI exampleAPI;
+  final ItemAPI itemAPI;
 }
 
-class ExampleAPI {
-  const ExampleAPI({
-    this.example = const String.fromEnvironment('EXAMPLE'),
-  });
-
-  final String example;
+class ItemAPI {
+  const ItemAPI({this.root = '/items'});
+  final String root;
 }
 ```
+
+`API` is registered in `CoreInjector` and injected where endpoints are needed.
 
 Alternative: static constants for paths that do not vary by environment. The critical rule is one owner and no literals in data-source methods.
 
@@ -65,24 +64,29 @@ abstract interface class ItemRemoteDataSource {
 }
 
 final class ItemRemoteDataSourceImpl implements ItemRemoteDataSource {
-  const ItemRemoteDataSourceImpl(this._dio, this._api);
+  const ItemRemoteDataSourceImpl({required Dio dio, required API api})
+    : _dio = dio,
+      _api = api;
+
   final Dio _dio;
   final API _api;
 
   @override
   Future<ItemModel> load(String id) async {
     try {
-      final response = await _dio.get('${_api.exampleAPI.example}/$id');
+      final response = await _dio.get('${_api.itemAPI.root}/$id');
       final payload = requireMap(response.data, key: 'data');
       return ItemModel.fromMap(payload);
     } on DioException catch (error) {
       TransportExceptionMapper.throwMapped(error);
+    } on ServerException {
+      rethrow;
     }
   }
 }
 ```
 
-The transport handler returns `Never`: it always throws a typed exception. Every Dio-backed data source should use this one mapper rather than repeat status and connection handling.
+The transport handler returns `Never`: it always throws a typed exception. Every remote data source routes client errors through that one handler, so the translation lives in a single place.
 
 ---
 
@@ -103,8 +107,9 @@ Map<String, dynamic> requireMap(Object? body, {required String key}) {
   if (body case {key: final Map value}) {
     return Map<String, dynamic>.from(value);
   }
-  throw const ServerException.rejected(
-    diagnosticMessage: 'Response payload is malformed',
+  throw const ServerException(
+    kind: ServerExceptionKind.rejected,
+    diagnosticMessage: 'Response payload could not be read',
   );
 }
 ```

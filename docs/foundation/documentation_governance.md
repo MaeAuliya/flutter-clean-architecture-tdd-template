@@ -14,9 +14,9 @@ Every normative statement in this documentation carries one of five levels. Appl
 | **Preferred** | should, prefer, normally, recommended | The sensible default. Deviation is allowed with a stated reason. |
 | **Optional** | may, when the project requires | A capability only some projects need — push notifications, maps, certificate pinning, biometrics. Never imply these are baseline requirements. |
 | **Context-dependent** | depends on | The right answer varies with team size, scale, or platform. Present the trade-off; do not pick for the reader. |
-| **Legacy / anti-pattern** | do not copy | Present in a reference implementation but not to be reproduced. Must explain *why*, or it reads as arbitrary. |
+| **Legacy / anti-pattern** | do not copy | Present in older code but not to be reproduced. Must explain *why*, or it reads as arbitrary. |
 
-**Promoting a rule to Mandatory requires evidence, not conviction.** Before writing "must", establish that the pattern is genuinely dominant in practice and that violating it causes concrete harm. A pattern used in one place out of fourteen is an aspiration, and must be documented as Preferred with its adoption status stated plainly.
+**Promoting a rule to Mandatory requires evidence, not conviction.** Before writing "must", establish that the pattern is genuinely dominant in practice and that violating it causes concrete harm. A pattern used in one place out of many is an aspiration, and must be documented as Preferred with its adoption status stated plainly.
 
 ---
 
@@ -77,7 +77,7 @@ Leaving two active patterns for one concern without declaring which is current i
 
 ## Keeping the documentation honest
 
-**No broken links.** Every relative link must resolve to a file that exists. Broken links are the first sign of documentation drift and the reason the predecessor of this set became untrustworthy.
+**No broken links.** Every relative link must resolve to a file that exists. Broken links are the first sign of documentation drift, and a doc set that accumulates them stops being trusted.
 
 **No orphan documents.** Every document is reachable from [`README.md`](../README.md) or from a document that is.
 

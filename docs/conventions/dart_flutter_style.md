@@ -22,6 +22,42 @@ final class LoadItem {
 }
 ```
 
+## Enhanced enums
+
+**Preferred for new or touched code.** Use an enhanced enum when a finite,
+closed set of variants owns small immutable metadata or behavior that otherwise
+would be repeated across callers. Keep the data declared by each value constant,
+and derive variant-specific values with an exhaustive switch expression.
+
+```dart
+enum ExampleStep {
+  first(MediaRes.exampleFirst),
+  second(MediaRes.exampleSecond);
+
+  const ExampleStep(this.assetPath);
+
+  final String assetPath;
+
+  String title(Texts texts) => switch (this) {
+    ExampleStep.first => texts.exampleFirstTitle,
+    ExampleStep.second => texts.exampleSecondTitle,
+  };
+}
+```
+
+Pass runtime or presentation dependencies — a string source, generated
+localizations once adopted — to the method that needs them; do not store
+display strings in enum values. An enum that imports string, asset, or color
+types is presentation-facing and belongs with the feature or shared
+presentation capability that owns it. It must not move into domain, data, or
+`core/` merely to make the enum globally reachable.
+
+Enhanced enums are not miniature service objects. Do not use them for mutable
+state, I/O, open-ended server data, or behavior that belongs in a use case or
+repository. Keep serialized/wire values explicit rather than relying on
+`enum.name`, and use `.values` only when declaration order is intentionally part
+of the presentation behavior.
+
 ## Functions
 
 - One function does one conceptual operation.
@@ -91,6 +127,10 @@ Dart files use `lower_snake_case`, types use `UpperCamelCase`, and members use `
 | Data source | `ItemRemoteDataSource` / `item_remote_data_source.dart` |
 | Use case | `LoadItem` / `load_item.dart` |
 | Routed page | `ItemScreen` / `item_screen.dart` |
+| Bloc | `ItemBloc` / `item_bloc.dart` |
+| Route-scoped notifier | `ItemProvider` / `item_provider.dart` |
+
+An entity carries no suffix: the domain type is `Item`, not `ItemEntity`. The hand-written code follows this; the generator currently emits `<Name>Entity` in `<name>_entity.dart`, which is tracked in [Template Next Steps](../TODO/next_steps.md) — rename after generating, or leave it consistently and record the deviation.
 
 Pick one noun per concept. Avoid vague suffixes such as `Service` when a capability name (`TokenRefresher`, `LocationGateway`) is clearer. Split files by responsibility rather than a fixed line count. Generated files follow their tool and are never hand-edited.
 
@@ -133,5 +173,7 @@ Do not assemble final user-facing copy in data or domain layers. Domain returns 
 ## Related documents
 
 - [Project Structure and Boundaries](../architecture/project_structure_and_boundaries.md)
+- [State Management](../patterns/state_management.md)
+- [Localization](../patterns/localization.md)
 - [Shared UI](../patterns/shared_ui.md)
 - [Code Review Checklist](../quality/code_review_checklist.md)

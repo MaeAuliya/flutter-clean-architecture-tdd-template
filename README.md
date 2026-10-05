@@ -76,7 +76,7 @@ project_root/
 │       │   ├── errors/             # Error handling & exceptions
 │       │   ├── extensions/         # Dart extensions
 │       │   ├── res/                # Resources (colors, typography, etc.)
-│       │   ├── services/           # External services (API, Firebase, etc.)
+│       │   ├── services/           # API, networking, DI, routing, logging
 │       │   ├── shared/             # Shared widgets/components
 │       │   ├── usecases/           # Contract Abstraction for usecase pattern
 │       │   ├── utils/              # Utility helpers
@@ -157,8 +157,8 @@ Before planning, coding, or reviewing, Codex must read `AGENTS.md` and the relev
 - `AGENTS.md`: contributor and Codex operating rules.
 - `docs/README.md`: documentation map.
 - `docs/patterns/`: source of truth for implementation consistency.
-- `docs/product/`: product placeholders to update when this template becomes a real app.
-- `docs/TODO/next_steps.md`: roadmap ideas and future improvements.
+- `docs/templates/`: fill-in templates for product, decision, feature, and test-plan docs.
+- `docs/TODO/next_steps.md`: known gaps between the docs and the current implementation.
 
 ## File Generator Tools
 
@@ -218,7 +218,7 @@ The delete command removes generated module files and related registry entries w
 
 ## Turning This Template Into a Real Project
 
-Update `docs/product/` with the product vision, target users, information architecture, user flows, design direction, and visual system. Replace template copy, app naming, routes, providers, and initial feature setup as needed.
+Use `docs/templates/decision_and_product_docs.md` to write the product vision, target users, information architecture, user flows, design direction, and visual system. Replace template copy, app naming, routes, providers, and initial feature setup as needed.
 
 When this template is used for a real product, the example `template` feature may be removed after the real initial feature, route, provider, and dependency setup are ready.
 

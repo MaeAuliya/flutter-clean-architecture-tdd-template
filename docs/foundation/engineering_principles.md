@@ -28,7 +28,7 @@ Expected failures — a rejected login, a timeout, a validation error — are or
 
 When a rule is expressed in several places, the copies drift. The second copy is the bug.
 
-**Why it matters.** In the reference codebase this principle is upheld well in one area and violated in another, and the contrast is instructive. Transport-error translation lives in a single handler used by 12 of 14 remote data sources — changing an error message is a one-line edit. Session-expiry handling, by contrast, is expressed both as a reusable mixin and as hand-written status-code checks scattered across blocs; the two now behave differently, and no one place defines the behavior.
+**Why it matters.** Contrast two shapes. When transport-error translation lives in a single handler that every remote data source routes through, changing an error message is a one-line edit. When session-expiry handling is expressed both as a reusable mixin *and* as hand-written status-code checks scattered across state holders, the two drift apart and no single place defines the behavior.
 
 **In practice.** Before writing a check, search for an existing one. If you find a near-duplicate, extend it rather than adding a sibling.
 
@@ -58,7 +58,7 @@ Premature abstraction guesses at variation that may never arrive, and the guess 
 
 Prefer designs where illegal combinations cannot be constructed over designs that detect illegal combinations at runtime.
 
-**Why it matters.** A component taking several independent booleans has a combinatorial state space, most of which is untested and some of which is nonsense. The reference codebase contains a shared error component that branches on multiple independent flags into four near-identical trees — the flags can be combined in ways that were never intended.
+**Why it matters.** A component taking several independent booleans has a combinatorial state space, most of which is untested and some of which is nonsense. A shared error component that branches on multiple independent flags into near-identical trees is the common instance: the flags can be combined in ways that were never intended, and nothing in the type prevents it.
 
 **In practice.** Prefer one variant parameter (enum or sealed type) over several booleans. Prefer required constructor parameters over nullable fields that must be set later. Prefer immutable objects with a `copyWith` over mutable ones.
 
@@ -78,7 +78,7 @@ Security should be the path of least resistance, not an added step that can be s
 
 Startup and infrastructure paths should keep the application usable when a non-critical dependency is unavailable.
 
-**Why it matters.** A remote configuration service being briefly unreachable should not brick the application. This is handled well in the reference codebase: configuration initialization falls back to compiled-in defaults, logs the failure, and lets the application boot.
+**Why it matters.** A remote configuration service being briefly unreachable should not brick the application. The shape to aim for: configuration initialization falls back to compiled-in defaults, logs the failure, and lets the application boot.
 
 **In practice.** Decide explicitly for each dependency whether failure is fatal or recoverable. Recoverable failures need a fallback and a log entry; they must not be swallowed silently. Distinguish *transient* failure (retry) from *invalid* state (stop) — conflating them either logs users out on a flaky network or retries forever on a genuine rejection.
 
@@ -88,7 +88,7 @@ Startup and infrastructure paths should keep the application usable when a non-c
 
 State outliving its screen is a source of bugs that are hard to reproduce, because behavior depends on navigation history.
 
-**Why it matters.** The reference codebase registers a large number of UI-state holders at application scope. Their state survives navigation, so screens must remember to reset it manually — and when a reset is forgotten, a screen opens showing data from a previous visit.
+**Why it matters.** When UI-state holders are registered at application scope, their state survives navigation, so screens must remember to reset it manually — and when a reset is forgotten, a screen opens showing data from a previous visit.
 
 **In practice.** Scope UI state to the route that owns it. Reserve application scope for genuinely global concerns such as session, theme, and connectivity. See [State Management](../patterns/state_management.md).
 
@@ -98,7 +98,7 @@ State outliving its screen is a source of bugs that are hard to reproduce, becau
 
 A theme only works if code consumes it. Every hardcoded color is a hole in dark mode and rebranding.
 
-**Why it matters.** This is the sharpest lesson available from the reference codebase. It defines a complete light and dark color scheme, and its shared widget layer reads from it correctly — but feature code overwhelmingly references raw color constants directly. The result is a well-built dark theme that is substantially inert wherever features paint their own surfaces. The infrastructure was never the problem; adoption was.
+**Why it matters.** The common failure is not a missing theme but an unused one: a complete light and dark color scheme, a shared widget layer that reads from it correctly, and feature code that references raw color constants directly anyway. The result is a well-built dark theme that is substantially inert wherever features paint their own surfaces. The infrastructure is rarely the problem; adoption is.
 
 **In practice.** Read colors and text styles from the theme in widget code. Raw tokens belong in the theme definition and nowhere else. See [Shared UI](../patterns/shared_ui.md).
 
@@ -118,7 +118,7 @@ A change should contain what the task requires and nothing else.
 
 Documentation that contradicts the code is worse than no documentation, because it is trusted.
 
-**Why it matters.** The `docs/` directory this template replaced described an entirely different application on a different framework. Anyone following it would have been led directly into wrong work.
+**Why it matters.** Stale documentation does not fail loudly. It is read, believed, and followed into wrong work — and the further it has drifted, the more confidently wrong the reader becomes. A document describing a boundary that no longer exists is more harmful than a missing document, because nothing signals that it should be doubted.
 
 **In practice.** When a change alters architectural behavior — a new pattern, a changed boundary, a replaced dependency — update the affected document in the same change. See [Documentation Governance](documentation_governance.md).
 
@@ -128,7 +128,7 @@ Documentation that contradicts the code is worse than no documentation, because 
 
 Claim what you have verified. Distinguish measurement from expectation.
 
-**Why it matters.** A guideline asserting that a codebase "always" does something, when it does so in one place out of fourteen, teaches a falsehood and erodes trust in every neighboring claim.
+**Why it matters.** A guideline asserting that a codebase "always" does something, when it does so in one place out of many, teaches a falsehood and erodes trust in every neighboring claim.
 
 **In practice.** This documentation classifies each rule by how consistently it is actually practiced — see the levels in the [documentation index](../README.md). When you add guidance, say whether it is established practice, an aspiration, or an untested idea. "We should test this" and "this is tested" are different statements.
 

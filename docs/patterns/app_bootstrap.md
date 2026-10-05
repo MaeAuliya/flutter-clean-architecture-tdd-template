@@ -16,8 +16,8 @@ Runs before the widget tree:
 1. Ensure framework bindings
 2. Set platform orientation/system UI
 3. Initialize crash reporting
-4. Initialize dependency injection; core injector validates build configuration first
-5. Load safe local defaults
+4. Initialize dependency injection
+5. Load safe local configuration/defaults
 6. Restore session material
 7. Start application
 ```

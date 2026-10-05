@@ -15,8 +15,8 @@ lib/
   main.dart
   core/
     network/
-    theme/
-    shared_ui/
+    res/
+    shared/
   features/
     [feature]/
       screen.dart
@@ -61,7 +61,7 @@ Use the full default structure:
 feature/
   data/datasources, models, repositories
   domain/entities, repositories, usecases
-  presentation/state, screens, views, widgets
+  presentation/bloc, providers, extensions, screens, views, widgets
 ```
 
 ### Add
@@ -75,7 +75,7 @@ feature/
 - Unit tests at use case, repository, and state-holder levels
 - Automated static analysis and test gate
 
-This is the scale demonstrated by the reference implementation and is the default assumed by most pattern documents.
+This is the scale most pattern documents in this set assume by default. This template itself ships at Level 1 — one feature, one contributor — so where a pattern document feels heavier than your project needs, check which level it is written for before adopting it wholesale.
 
 ---
 

@@ -17,7 +17,7 @@ Presentation               maps failures to renderable state
 ```
 
 ```dart
-sealed class Failure {
+sealed class Failure extends Equatable {
   const Failure({required this.userMessage, this.cause});
   final String userMessage;
   final Object? cause;
@@ -45,24 +45,47 @@ abstract final class TransportExceptionMapper {
     }
 
     final statusCode = error.response?.statusCode;
+
     if (statusCode == 401 || statusCode == 403) {
-      throw const ServerException.unauthorized();
+      throw const ServerException.unauthorized(
+        diagnosticMessage: 'Transport rejected authorization',
+      );
     }
     if (statusCode == 400 || statusCode == 422) {
-      throw const ServerException.validation();
+      throw const ServerException.validation(
+        diagnosticMessage: 'Transport rejected request validation',
+      );
     }
     if (statusCode != null && statusCode >= 500) {
-      throw const ServerException.server();
+      throw const ServerException.server(
+        diagnosticMessage: 'Transport server failure',
+      );
     }
-    if (error.type == DioExceptionType.connectionError) {
-      throw const ServerException.network();
+
+    switch (error.type) {
+      case DioExceptionType.connectionTimeout:
+      case DioExceptionType.sendTimeout:
+      case DioExceptionType.receiveTimeout:
+      case DioExceptionType.connectionError:
+        throw const ServerException.network(
+          diagnosticMessage: 'Transport connection failure',
+        );
+      case DioExceptionType.cancel:
+        throw const RequestCancelledException();
+      case DioExceptionType.badCertificate:
+      case DioExceptionType.badResponse:
+      case DioExceptionType.unknown:
+        throw const ServerException.rejected(
+          diagnosticMessage: 'Transport request rejected',
+        );
     }
-    throw const ServerException.rejected();
   }
 }
 ```
 
-Returning `Never` tells both compiler and reader that execution cannot continue. **Mandatory.** Do not reimplement this switch in each data source.
+Returning `Never` tells both compiler and reader that execution cannot continue. One handler means changing an error message is a one-line edit.
+
+**Mandatory.** Do not reimplement this switch in each data source. Note that this template ships the mapper but does not yet route its one remote data source through it — see [Template Next Steps](../TODO/next_steps.md).
 
 ---
 
@@ -141,7 +164,7 @@ Do not map cancellation to "Something went wrong."
 ## Common mistakes
 
 - Numeric status-code checks scattered across blocs
-- `catch (e) => Left(ServerFailure(message: e.toString()))`
+- `catch (e) => Left(ServerFailure(userMessage: e.toString()))`
 - Full response logging on endpoints carrying personal data
 - Treating malformed response as offline
 - Returning null for failure, erasing its cause
@@ -153,7 +176,7 @@ Do not map cancellation to "Something went wrong."
 
 ## Testing
 
-- Every client exception type maps to the expected remote exception
+- Every `DioExceptionType` maps to the expected `ServerException` kind
 - Repository maps each typed exception to the correct failure
 - Unknown/malformed error body never crashes the mapper
 - Sensitive backend content is not exposed

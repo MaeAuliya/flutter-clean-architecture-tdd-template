@@ -23,9 +23,14 @@ class API {
 
   final String baseUrl;
 
+  List<String> missingKeys() => [
+    if (baseUrl.trim().isEmpty) 'BASE_URL',
+  ];
+
   void validate() {
-    if (baseUrl.trim().isEmpty) {
-      throw StateError('Missing build configuration: BASE_URL');
+    final missing = missingKeys();
+    if (missing.isNotEmpty) {
+      throw StateError('Missing build configuration: ${missing.join(', ')}');
     }
 
     final uri = Uri.tryParse(baseUrl);
@@ -36,19 +41,24 @@ class API {
 }
 ```
 
-**Mandatory.** Validate required keys before application startup. Validate structural constraints too; this template requires `BASE_URL` to be an absolute HTTPS URL. `String.fromEnvironment` returns an empty string by default; an app that builds successfully with missing or malformed configuration and fails every call later is a preventable failure mode.
+In this template the accessor is `API` under `core/services/api/`, and `CoreInjector` calls `validate()` as its first step — before any other dependency is constructed.
+
+**Mandatory.** Validate required keys before application startup. `String.fromEnvironment` returns an empty string by default; an app that builds successfully with missing configuration and fails every call later is a preventable failure mode.
+
+**Mandatory.** Validation is structural, not just presence. A `BASE_URL` that is present but not an absolute HTTPS URL must fail at startup too — collect every missing key before throwing so one run reports all of them, then check the shape of the values you got.
 
 ---
 
 ## Environment files
 
-Use ignored `env.json` locally. Add target-specific files only when deployment environments require them:
+This template uses a single ignored `env.json`, copied from the committed `env.example.json`:
 
 ```text
-env.json
-env.staging.json
-env.production.json
+env.example.json    # committed, placeholders only
+env.json            # ignored, real values
 ```
+
+Split it per target — `env.development.json`, `env.staging.json`, `env.production.json` — once the project has more than one environment.
 
 Commit `env.example.json` with every required key and obvious placeholders:
 
@@ -75,7 +85,7 @@ Document the run/build command in the project root instructions. Configuration o
 - Display names/icons
 - Native SDK configuration
 
-Build-time definitions alone are simpler when only API URLs and safe flags differ. Flavors add native project maintenance; do not adopt them merely to represent an environment-name string.
+Build-time definitions alone are simpler when only API URLs and safe flags differ. Flavors add native project maintenance; do not adopt them merely to represent a string called `APP_ENV`.
 
 ---
 

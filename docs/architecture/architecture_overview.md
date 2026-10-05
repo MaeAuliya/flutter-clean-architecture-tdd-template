@@ -115,7 +115,7 @@ final class ItemRepositoryImpl implements ItemRepository {
       final model = await _remote.loadItem(id.value);
       return Right(model.toEntity());
     } on ServerException catch (error) {
-      return Left(FailureMapper.fromException(error));
+      return Left(Failure.fromException(error));
     }
   }
 }
@@ -140,6 +140,8 @@ abstract class UseCaseWithoutParams<T> {
   ResultFuture<T> call();
 }
 ```
+
+Two stream variants exist alongside these for sources that emit over time: `UseCaseStreamWithParams<T, P>` and `UseCaseStreamWithoutParams<T>`, returning `ResultStream<T>`. Four base types in total — use the stream variants only when the underlying source is genuinely a stream, not to future-proof a one-shot call.
 
 **Do not create an empty pass-through type for every repository call mechanically.** In a small feature where a state holder is the only caller and the operation has no policy, calling the repository contract directly may be a reasonable simplification. See [Scalability Guidelines](scalability_guidelines.md).
 
@@ -185,7 +187,7 @@ data/datasources/
   item_local_data_source.dart      # cache/database/preferences — only if needed
 ```
 
-**Optional.** Do not generate a local data source for every feature by ritual. In the reference implementation, 12 of 14 features have one, but several are seven-line stubs. An unused abstraction adds navigation cost without creating a boundary.
+**Optional.** Do not generate a local data source for every feature by ritual. Generating one per feature reliably produces short stubs that protect no boundary; an unused abstraction adds navigation cost without creating a seam. Note that this template's generator currently *does* emit one for every feature — see [Template Next Steps](../TODO/next_steps.md).
 
 Use an abstract contract when the source will be faked in tests or has multiple implementations. Otherwise, a concrete injected type is enough.
 
@@ -200,7 +202,7 @@ The architecture does not mandate a specific state library. It mandates ownershi
 - Global state is reserved for genuinely global concerns
 - State transitions are explicit and testable
 
-The reference implementation uses event-driven blocs for domain operations and `ChangeNotifier` providers for form/UI state. The separation is sound; registering every UI provider globally is not. See [State Management](../patterns/state_management.md).
+This template uses event-driven blocs for domain operations and `ChangeNotifier` providers for form/UI state. The separation is the point; registering every UI provider at application scope defeats it. See [State Management](../patterns/state_management.md).
 
 ---
 
@@ -210,15 +212,24 @@ Cross-cutting capabilities live outside features:
 
 ```text
 core/
-  errors/
-  network/
-  routing/
-  storage/
-  logging/
-  configuration/
-  theme/
-  shared_ui/
+  errors/                       # exceptions, failures, the mapper between them
+  res/                          # theme, colors, typography, fonts, asset and string references
+  shared/                       # cross-feature widgets, views, screens, shimmer placeholders
+  usecases/                     # the four use case base types
+  utils/                        # typedefs and narrow helpers
+  extensions/                   # generic BuildContext/Color/String extensions
+  enums/
+  modules/                      # shared capabilities with their own data/domain layers
+  services/
+    api/                        # build-time configuration and endpoint ownership
+    network/                    # transport error translation
+    injection/                  # DI container and per-feature injectors
+    router/                     # route table and per-feature route registries
+    providers/                  # application-scoped provider registry
+    logging/
 ```
+
+This is the tree this template ships. Names such as `storage/` or `configuration/` appear in other pattern documents as the natural home for those capabilities; add them under `services/` when you implement them.
 
 A capability shared by several features and carrying its own data/domain layers may become a **shared module** rather than a loose utility. See [Project Structure and Boundaries](project_structure_and_boundaries.md).
 

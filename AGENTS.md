@@ -2,7 +2,7 @@
 
 ## Required Agent Workflow
 
-Codex must read `AGENTS.md` and all relevant files in `docs/` before planning, coding, or reviewing changes. `docs/patterns/` is the source of truth for implementation consistency. `docs/product/` contains product placeholders and should be updated when this template is used for a real product.
+Codex must read `AGENTS.md` and all relevant files in `docs/` before planning, coding, or reviewing changes. `docs/patterns/` is the source of truth for implementation consistency. `docs/templates/` contains fill-in templates for product and decision documentation, to be used when this template is adopted for a real product. `docs/TODO/next_steps.md` records known gaps between the documentation and the current implementation — read it before reporting one as a new finding.
 
 Do not rename architecture folders, replace routing, replace dependency injection, or overwrite unrelated local changes.
 
@@ -14,7 +14,7 @@ Do not rename architecture folders, replace routing, replace dependency injectio
 - `test/`: tests mirroring source structure.
 - `assets/`: fonts, icons, images, vectors, and animations.
 - `tools/`: local feature/module generators.
-- `docs/`: Codex-ready architecture, product, and roadmap documentation.
+- `docs/`: Codex-ready architecture, pattern, workflow, and quality documentation.
 
 ## File Generator Rules
 
@@ -69,3 +69,16 @@ Do not delete `template` before replacing app dependencies that still point to i
 Copy `env.example.json` to ignored `env.json`, then run with `flutter run --dart-define-from-file=env.json`. Use `flutter pub get`, `dart format .`, `flutter analyze`, and `flutter test` for normal development. CI runs generator round-trip validation, analysis, and tests for pushes and PRs to `master` and `develop`.
 
 Tests use `flutter_test`, `mocktail`, and `bloc_test`. Name tests `_test.dart`, mirror source structure, and prioritize use cases, repositories, data sources, models, and Bloc behavior. PRs need a summary, linked issues when relevant, UI screenshots, and analysis/test results.
+
+## graphify
+
+This project has a knowledge graph at graphify-out/ with god nodes, community structure, and cross-file relationships.
+
+When the user types `/graphify`, use the installed graphify skill or instructions before doing anything else.
+
+Rules:
+- For codebase questions, first run `graphify query "<question>"` when graphify-out/graph.json exists. Use `graphify path "<A>" "<B>"` for relationships and `graphify explain "<concept>"` for focused concepts. These return a scoped subgraph, usually much smaller than GRAPH_REPORT.md or raw grep output.
+- Dirty graphify-out/ files are expected after hooks or incremental updates; dirty graph files are not a reason to skip graphify. Only skip graphify if the task is about stale or incorrect graph output, or the user explicitly says not to use it.
+- If graphify-out/wiki/index.md exists, use it for broad navigation instead of raw source browsing.
+- Read graphify-out/GRAPH_REPORT.md only for broad architecture review or when query/path/explain do not surface enough context.
+- After modifying code, run `graphify update .` to keep the graph current (AST-only, no API cost).

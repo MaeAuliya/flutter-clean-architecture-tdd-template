@@ -37,29 +37,45 @@ For a complex form, use a route-scoped form controller. For one toggle or select
 ## 4. Build the screen hierarchy
 
 ```text
+bloc/item_bloc.dart               # async/server state, events, states
+providers/item_provider.dart      # route-scoped ChangeNotifier, if needed
+extensions/item_context_extension.dart   # typed context accessors for this feature
 screens/item_screen.dart          # route shell, providers, listeners
 views/item_content_view.dart      # large body
 views/item_error_view.dart        # only if shared error state is insufficient
 widgets/item_badge.dart           # small local component
 ```
 
+The split between `screens/` and `views/` is load-bearing: a `Screen` owns `static const routeName`, lifecycle, listeners, and the `Scaffold`; a `View` owns the layout body and nothing else.
+
 Use shared scaffold, buttons, inputs, and loading/empty/error views. Read colors and type from the theme.
 
 ## 5. Register the route
 
-- Declare a stable route identifier
+- Declare a stable route identifier as `static const routeName` on the screen
+- Add the `AppRoute` to the feature's `FeatureRouteRegistry`, not to a shared router file
+- Wrap the screen in its `BlocProvider`/`ChangeNotifierProvider` inside that registry entry
 - Use a typed immutable args object for meaningful inputs
 - Validate required args; do not silently invent identifiers
-- Create the state holder at route entry
 - Define back behavior and deep-link requirements
+
+See [Routing](../patterns/routing.md) for the registry shape.
 
 ## 6. Localization
 
-Classify every new literal. Put user-facing copy in ARB and access it through `context.l10n`; keep routes, keys, log tags, asset paths, and wire values technical. Context-free validators/state expose semantic message identifiers that presentation resolves. Run `flutter gen-l10n` after resource edits.
+Classify every new literal. Keep routes, keys, log tags, asset paths, and wire values technical. Context-free validators/state expose semantic message identifiers that presentation resolves.
+
+If the project has adopted localization, put user-facing copy in ARB, access it through `context.l10n`, and run `flutter gen-l10n` after resource edits. This template has not — see [Localization](../patterns/localization.md) — so user-facing copy goes in `core/res/texts.dart` and never inline in a widget.
 
 ## 7. Effects
 
 Handle navigation, snackbar, dialog, and external launch through a listener/effect channel. Effects must be consumed once and not replay on rebuild.
+
+For a listener that handles several typed state variants, follow the
+[typed listener dispatch](../patterns/state_management.md#typed-listener-dispatch)
+convention: group variants that produce the same effect and destructure payloads
+in their case patterns. Keep durable rendering in the builder or view rather
+than moving it into the listener.
 
 ## 8. Verify
 

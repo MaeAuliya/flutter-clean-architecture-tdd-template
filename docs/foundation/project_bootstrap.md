@@ -63,7 +63,7 @@ Build these before the first feature. Each is documented separately.
 | Theme and tokens | [Shared UI](../patterns/shared_ui.md) | Full light and dark schemes from the start |
 | Shared components | [Shared UI](../patterns/shared_ui.md) | Button, input, app bar, loading, empty, error |
 
-**Define the theme fully before building screens.** Retrofitting dark mode after feature code has hardcoded its colors is one of the most expensive corrections available, and one the reference implementation demonstrates clearly: it has a complete dark scheme that feature code largely bypasses. Establishing the habit early costs nothing; reversing it later costs a sweep of every widget.
+**Define the theme fully before building screens.** Retrofitting dark mode after feature code has hardcoded its colors is one of the most expensive corrections available: the scheme ends up complete but inert, bypassed by the very widgets it was meant to control. Establishing the habit early costs nothing; reversing it later costs a sweep of every widget.
 
 ---
 
@@ -111,7 +111,7 @@ Follow [Adding a Feature](../workflows/adding_feature.md). Then review honestly:
 
 ## Phase 7 — Quality gate
 
-Establish the gate before the codebase grows. Retrofitting tests onto an established codebase is substantially harder than writing them alongside. This template starts with CI plus focused unit, Bloc, repository, mapper, data-source, API, and shared-widget tests; consuming projects must keep extending them with behavior.
+Establish the gate before the codebase grows. Retrofitting tests onto an established codebase is substantially harder than writing them alongside. Declaring test tooling as a dependency is the easy half; the habit is the half that decides whether the gate exists a year later.
 
 - Static analysis clean, enforced
 - Test structure mirroring the source tree

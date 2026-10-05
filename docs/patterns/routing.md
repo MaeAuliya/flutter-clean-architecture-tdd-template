@@ -8,32 +8,59 @@ Routing translates a destination and its arguments into a page and its dependenc
 
 ## Central route table
 
-For a medium application, one route generator is simple and visible:
+A single `switch` over route names is the simplest visible form, but it becomes a merge-conflict hotspot as soon as several features are added to it. This template instead splits registration per feature behind one router interface from the start:
 
 ```dart
-final class AppRouter {
-  static final navigatorKey = GlobalKey<NavigatorState>();
+class AppRoute {
+  const AppRoute({required this.name, required this.builder});
+  final String name;
+  final AppRouteBuilder builder;   // Widget Function(BuildContext, RouteSettings)
+}
 
-  static Route<dynamic> generate(RouteSettings settings) {
-    return switch (settings.name) {
-      ProfileScreen.routeName => page(
-          settings,
-          (_) => BlocProvider(
-            create: (_) => locator<ProfileBloc>(),
-            child: ProfileScreen(
-              args: requireArgs<ProfileArgs>(settings),
-            ),
-          ),
-        ),
-      _ => unknownRoute(settings),
-    };
-  }
+abstract interface class FeatureRouteRegistry {
+  List<AppRoute> get routes;
 }
 ```
 
-This is the composition boundary: it creates route-scoped state and hands typed arguments to the screen.
+Each feature implements the registry, and this is where route-scoped state is created:
 
-As the application grows, split registrations by feature while retaining one router interface. See [Scalability Guidelines](../architecture/scalability_guidelines.md).
+```dart
+class ProfileRouteRegistry implements FeatureRouteRegistry {
+  const ProfileRouteRegistry();
+
+  @override
+  List<AppRoute> get routes => [
+    AppRoute(
+      name: ProfileScreen.routeName,
+      builder: (context, settings) => MultiProvider(
+        providers: [
+          BlocProvider(create: (_) => sl<ProfileBloc>()),
+          ChangeNotifierProvider(create: (_) => ProfileProvider()),
+        ],
+        child: const ProfileScreen(),
+      ),
+    ),
+
+    // GENERATED PROFILE FEATURE ROUTES - DO NOT REMOVE
+  ];
+}
+```
+
+Registries are listed in `AppRoutes._registries`, which flattens them into a name→builder map. `generateRoute` is then only a lookup:
+
+```dart
+Route<dynamic> generateRoute(RouteSettings settings) {
+  final route = AppRoutes.routeMap[settings.name];
+  if (route == null) {
+    return _page(settings, (_) => const PageUnderConstruction());
+  }
+  return _page(settings, (context) => route.builder(context, settings));
+}
+```
+
+**Mandatory.** `generateRoute` performs a map lookup and nothing else. No switch-cases, no conditional logic, no bloc or provider construction — that belongs in the feature's registry. Adding a route means editing one feature registry, not a shared file.
+
+The `PageUnderConstruction` fallback is a development affordance, not an error screen. A production application should distinguish "route not registered" (a defect) from a user-facing not-found page.
 
 ---
 
@@ -62,6 +89,8 @@ T requireArgs<T>(RouteSettings settings) {
 ```
 
 Do not silently default a required identifier; that turns a navigation defect into a downstream data defect.
+
+This template's `AppRoute` passes `RouteSettings` through to the builder but ships no argument type or `requireArgs` helper yet — its one feature takes no arguments. Add both when the first screen needs them; see [Template Next Steps](../TODO/next_steps.md).
 
 ---
 

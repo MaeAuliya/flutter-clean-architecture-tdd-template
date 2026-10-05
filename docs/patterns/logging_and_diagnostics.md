@@ -23,7 +23,7 @@ abstract interface class AppLogger {
 
 The production implementation may send to crash reporting; development may print. Features inject `AppLogger`, not the SDK.
 
-This is a mature pattern in the reference implementation: a narrow logger abstraction wraps crash diagnostics and supports custom context without spreading the provider type.
+The value of the pattern is containment: a narrow logger abstraction wraps crash diagnostics and supports custom context without spreading the provider type through feature code.
 
 ---
 

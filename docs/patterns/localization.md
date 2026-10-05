@@ -2,6 +2,8 @@
 
 **Status: Preferred for applications serving more than one locale.** Flutter's generated ARB workflow is the default; do not add a parallel runtime string package without a documented need.
 
+> **Not wired in this template.** There is no `lib/l10n/`, no `l10n.yaml`, no `.arb` file, and `pubspec.yaml` declares `intl` but not `flutter_localizations`. User-facing copy currently lives in `core/res/texts.dart`. This document describes how to adopt localization, not the current state — every reference to `context.l10n` and `AppLocalizations` below is the target shape. See [Template Next Steps](../TODO/next_steps.md).
+
 ## Architecture
 
 ```text
@@ -24,12 +26,12 @@ Generated localization types belong at presentation boundaries. Domain and data 
 ```text
 lib/l10n/
   app_en.arb       # template and fallback
-  app_id.arb
+  app_xx.arb       # one per additional locale
   generated/       # tool-owned; never edit manually
 l10n.yaml
 ```
 
-`pubspec.yaml` includes `flutter_localizations` from the SDK, `intl`, and `flutter.generate: true`.
+To adopt this, add `flutter_localizations` from the SDK alongside `intl`, and set `flutter.generate: true` in `pubspec.yaml`.
 
 After editing ARB files:
 
@@ -70,7 +72,7 @@ Use ICU plurals for counts and `intl` locale-aware formatters for user-facing da
 
 ## Locale state and persistence
 
-Persist only a stable bare language code such as `en` or `id`, never a Flutter `Locale` object. The domain owns the supported-code enum and normalization; malformed, missing, and unsupported values fall back to English.
+Persist only a stable bare language code such as `en` or `fr`, never a Flutter `Locale` object. The domain owns the supported-code enum and normalization; malformed, missing, and unsupported values fall back to English.
 
 Locale loading must not block startup. A persistence failure is logged through the existing diagnostics abstraction and leaves a usable fallback locale.
 
@@ -83,7 +85,7 @@ Validators, repositories, data sources, and domain types cannot access `context.
 ```text
 ValidationIssue.requiredField
 NetworkFailure.offline
-OrderStatus.reserved
+ItemStatus.unavailable
 ```
 
 Presentation maps the identifier to `context.l10n`. Do not introduce a global localization singleton or inject generated localizations into domain/data.
@@ -119,7 +121,7 @@ For every new string literal, classify it before writing:
 
 **Do not localize:** routes, API/JSON/storage keys, headers, asset paths, environment keys, log tags, analytics identifiers, enum wire values, regexes, MIME types, date patterns, debug-only messages.
 
-New user-facing literals outside ARB are review defects.
+Once the project has adopted localization, new user-facing literals outside ARB are review defects. Until then, user-facing copy belongs in `core/res/texts.dart` rather than inline in widgets — the same containment rule, a different destination.
 
 ## Testing
 

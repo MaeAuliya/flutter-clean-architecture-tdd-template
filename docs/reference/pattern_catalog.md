@@ -31,7 +31,6 @@ Central index of reusable implementation patterns. Add a row whenever a pattern 
 - Optional does not mean low quality; it means do not adopt without the requirement.
 - Preferred patterns are defaults, not inviolable laws.
 - Mandatory rules are limited to boundaries with clear correctness or security consequences.
-- Testing foundations exist in this template; consuming projects extend coverage by feature risk. See [Testing Strategy](../quality/testing_strategy.md).
 
 ## Adding a pattern
 

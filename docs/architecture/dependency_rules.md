@@ -27,8 +27,8 @@ presentation ─────▶ domain ◀───── data
 | `feature/presentation` | Same feature domain; shared UI; routing; state library | Data source; repository implementation; transport model; HTTP client |
 | `feature/domain` | Domain-safe primitives; result type | Flutter widgets; state library; HTTP/storage SDKs; own data layer; other feature presentation/data |
 | `feature/data` | Same feature domain; network/storage infrastructure | Presentation; another feature's implementation |
-| `core/shared_ui` | Theme, small core utilities | Any product feature |
-| `core/services` | Infrastructure packages and domain-safe interfaces | Product-feature presentation |
+| `core/shared` | Theme, small core utilities | Any product feature |
+| `core/services` | Infrastructure packages and domain-safe interfaces | Product-feature presentation — except the composition-root files noted below |
 | `core/module/domain` | Domain-safe core only | Module data/presentation; product features |
 
 ---
@@ -94,7 +94,7 @@ A logger is a strong candidate: a one-method `AppLogger` prevents the crash-repo
 - Importing another feature's transport model because its fields happen to match
 - A global service locator used ad hoc from widgets to reach any dependency
 
-The dependency container is a composition tool, not a license to ignore boundaries. Composition-root files under `core/services/injection/` and `core/services/router/registries/` may import feature entry points to assemble dependencies and routes. Other core files must not import feature code.
+The dependency container is a composition tool, not a license to ignore boundaries. Composition-root files under `core/services/injection/injectors/` and `core/services/router/registries/` may import feature entry points — blocs, providers, screens, data sources — to assemble dependencies and routes. That is their entire job. Other files under `core/` must not import feature code.
 
 ---
 
@@ -106,7 +106,7 @@ When two features need the same type, first determine ownership:
 - If neither owns it and it is stable across domains, move it to a shared module.
 - If the types merely look the same today but have different meanings, keep them separate.
 
-Two `Address` types used for delivery and identity verification may diverge; merging them because the fields match today creates future coupling.
+Two similarly shaped types used in different capabilities may diverge; merging them because the fields match today creates future coupling.
 
 ---
 

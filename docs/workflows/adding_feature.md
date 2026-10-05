@@ -9,6 +9,27 @@ A vertical-slice sequence that keeps the feature usable and reviewable at each s
 - Similar features have been inspected
 - Relevant architecture and pattern docs have been read
 
+## Scaffold first
+
+This template ships a generator. Use it rather than hand-writing the skeleton:
+
+```bash
+dart run tools/file_gen_main.dart feature <feature_name>    # lowercase snake_case
+dart run tools/file_gen_main.dart module <module_name>      # shared capability, no presentation
+```
+
+It creates the directory tree and files for all three layers, their mirrored tests, and — this is the part worth knowing — it patches the composition registries for you by inserting entries at the `// GENERATED ... - DO NOT REMOVE` markers in `injection_container.dart` and `app_routes.dart`. Never remove those markers.
+
+The generator gives you a working skeleton, not a finished feature. Always inspect what it emitted, and delete what your feature does not need — it currently creates a local data source, an empty `presentation/widgets/` directory, and two pass-through use cases for every feature regardless of need. The steps below are what you do to the generated files.
+
+Deleting a feature reverses both halves:
+
+```bash
+dart run tools/file_gen_main.dart delete feature <feature_name>
+```
+
+Check the registry files afterwards.
+
 ## Sequence
 
 ### 1. Define the capability
@@ -50,16 +71,16 @@ Follow [Adding Data Access](adding_data_access.md).
 
 ### 4. Register dependencies
 
-Create one feature injector and register:
+The generator created one feature injector. Fill it in, registering outermost-inward:
 
 ```text
-state holder (factory)
+bloc (factory)
   → use cases (lazy singleton)
     → repository contract → implementation
       → actual data sources
 ```
 
-Add the injector to the root registry. Add a resolution smoke test.
+The injector is already listed in `InjectionContainer._injectors`. Add a resolution smoke test.
 
 ### 5. Build presentation
 
@@ -88,15 +109,18 @@ See [Testing Strategy](../quality/testing_strategy.md).
 - Add/update a pattern only if the feature introduces reusable technical behavior
 - Record a significant new architectural decision as an ADR
 - Update environment example and integration docs for new configuration
-- Add user-facing copy to every supported ARB and run `flutter gen-l10n`
+- If the project has adopted localization, add user-facing copy to every supported ARB and run `flutter gen-l10n`; otherwise put it in `core/res/texts.dart`
 - Update the catalog when adding a pattern
 
 ## Registration checklist
 
 ```text
-[ ] Feature injector added to root
+[ ] Feature injector present in InjectionContainer._injectors
+[ ] Route registry present in AppRoutes._registries
+[ ] Generated markers intact in both registry files
 [ ] State holder registered as factory/route-scoped
 [ ] Route name and typed args registered
+[ ] Generated-but-unneeded files deleted (local source, empty widgets/, pass-through use cases)
 [ ] Environment keys added to example file, if any
 [ ] Native permissions/config added on both platforms, if any
 [ ] Analytics/diagnostic event names registered, if any

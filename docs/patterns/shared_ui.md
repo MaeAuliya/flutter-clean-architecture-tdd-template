@@ -19,7 +19,7 @@ Primitive tokens belong in theme construction. Widget code reads semantic roles.
 
 **Mandatory.** Feature widgets must not reference raw color tokens or `Colors.*` for themed UI. Exceptions are intrinsic colors — a brand logo, a data-series palette, or a photographed color — and they should be named explicitly.
 
-This rule addresses a proven failure mode: a mature reference implementation defines full light and dark `ColorScheme`s and its shared widgets consume them correctly, but feature widgets overwhelmingly read raw constants. The dark theme exists structurally yet cannot control those features.
+This rule addresses a specific failure mode: a project defines full light and dark `ColorScheme`s, its shared widgets consume them correctly, and feature widgets read raw constants anyway. The dark theme then exists structurally yet cannot control those features — the work was done and is inert.
 
 ---
 
@@ -93,7 +93,7 @@ final class PullToRefreshError extends ErrorPresentation {}
 final class RetryButtonError extends ErrorPresentation {}
 ```
 
-**Legacy / anti-pattern.** Several independent flags such as `useButton`, `useRefresh`, and `useOutsideRefresh` produce ambiguous combinations and duplicated widget trees. Use one variant and extract the shared body.
+**Legacy / anti-pattern.** Two or three independent display flags produce ambiguous combinations and duplicated widget trees — three booleans give eight states, most of them untested and some meaningless. Use one variant parameter and extract the shared body.
 
 Every error state states:
 
@@ -117,7 +117,7 @@ Do not move a component to shared on its first use. A stable API is easier to se
 
 ## Responsive layout
 
-The reference implementation uses scale factors derived from a design baseline:
+A common approach uses scale factors derived from a design baseline:
 
 ```dart
 double get widthScale => width / designWidth;

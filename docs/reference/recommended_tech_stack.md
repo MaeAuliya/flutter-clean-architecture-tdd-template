@@ -4,17 +4,17 @@ A capability reference, not a package advertisement. Select the smallest stack t
 
 ## Core stack
 
-| Category | Recommended approach | Observed implementation category | Alternatives / selection criteria |
+| Category | Recommended approach | This template's choice | Alternatives / selection criteria |
 |---|---|---|---|
-| UI | Flutter Material 3 with semantic `ColorScheme` and project components | Framework theme + token classes | Cupertino/adaptive component layer where platform fidelity is primary |
-| State | Event/method-driven immutable state holder, route-scoped | Bloc plus provider/notifier | Riverpod, ValueNotifier, other reactive libraries; choose team fit and lifecycle clarity |
-| DI | Constructor injection; modular composition root | GetIt with per-feature injectors | Manual root composition for small apps; provider-based DI; compile-time DI at large scale |
-| Networking | One configured client, interceptors, explicit timeouts | Dio-style client | Standard HTTP client or generated API client; require cancellation, interceptors, testability |
-| Results | Typed success/failure return | Functional `Either` | Sealed project-owned `Result`; choose readability over functional novelty |
-| Equality | Immutable value equality | Equality helper package | Generated immutable models or native equality methods |
-| Persistence | Typed gateway selected by sensitivity/query needs | Preferences + encrypted storage + file cache | Embedded SQL/key-value databases for structured/offline data |
-| Testing | Framework tests, state-library utilities, fakes/mocks | Test framework plus mock and bloc-test packages declared | Prefer fakes for stable small contracts |
-| Configuration | Build-time definitions + typed accessor | Compile-time environment values | Flavors when native identity/config differs |
+| UI | Flutter Material 3 with semantic `ColorScheme` and project components | `AppTheme` with token classes under `core/res/` | Cupertino/adaptive component layer where platform fidelity is primary |
+| State | Event/method-driven immutable state holder, route-scoped | `bloc` for async/server state, `provider` `ChangeNotifier` for ephemeral UI state | Riverpod, ValueNotifier, other reactive libraries; choose team fit and lifecycle clarity |
+| DI | Constructor injection; modular composition root | `get_it` with one `Injector` per feature | Manual root composition for small apps; provider-based DI; compile-time DI at large scale |
+| Networking | One configured client, interceptors, explicit timeouts | `dio`, configured once in `CoreInjector` | Standard HTTP client or generated API client; require cancellation, interceptors, testability |
+| Results | Typed success/failure return | `dartz` `Either<Failure, T>` via `ResultFuture<T>` | Sealed project-owned `Result`; choose readability over functional novelty |
+| Equality | Immutable value equality | `equatable` | Generated immutable models or native equality methods |
+| Persistence | Typed gateway selected by sensitivity/query needs | `shared_preferences` only | Encrypted storage for credentials; embedded SQL/key-value databases for structured/offline data |
+| Testing | Framework tests, state-library utilities, fakes/mocks | `flutter_test`, `mocktail`, `bloc_test` | Prefer fakes for stable small contracts |
+| Configuration | Build-time definitions + typed accessor | `String.fromEnvironment` behind `API`, validated at startup | Flavors when native identity/config differs |
 
 ## Optional integration stack
 
@@ -38,7 +38,7 @@ A capability reference, not a package advertisement. Select the smallest stack t
 
 **Handwritten mapping** is recommended for modest model count and custom validation. **Generated serialization** becomes useful when DTO volume creates repetitive defects. Generation introduces build steps, version coupling, generated output policy, and migration work; record the choice.
 
-A project scaffold generator is useful when it creates the entire working skeleton *and* states/automates registration. A generator that emits empty local sources and leaves DI commented out accelerates inconsistency rather than development.
+A project scaffold generator is useful when it creates the entire working skeleton *and* automates registration. A generator that leaves registration to the developer accelerates inconsistency rather than development: half-wired features look complete. This template's generator patches the DI container and route registry automatically; it also emits some files by ritual rather than need, which is tracked in [Template Next Steps](../TODO/next_steps.md).
 
 ## Package selection criteria
 
